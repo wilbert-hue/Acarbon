@@ -1,63 +1,1486 @@
 {
-  "Global": {
-    "By Type": {
-      "Sub-Normothermic Perfusion (20–34°C)": {},
-      "Warm or Normothermic Perfusion (35–37°C)": {}
+  "North America": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
     },
-    "By Organ Type": {
-      "Liver": {},
-      "Heart": {},
-      "Lung": {},
-      "Kidney": {},
-      "Others (Pancreas, Small bowel / Intestine, Composite Tissues / Limb Perfusion (emerging use cases))": {}
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
     },
-    "Application / Use Case": {
-      "Organ Preservation": {},
-      "Viability Assessment": {},
-      "Physiologic Transport": {},
-      "Reconditioning Marginal Organs": {},
-      "Others (Research Use / Protocol development)": {}
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
     },
     "By End User": {
-      "Hospitals & Clinics": {},
-      "Specialty Clinic/Centers": {},
-      "Transplant Centers": {},
-      "Others (Research Institutes/Centers, Organ Procurement Organizations, etc.)": {}
-    },
-    "By Region": {
-      "North America": {
-        "U.S.": {},
-        "Canada": {}
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "U.S.": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
       },
-      "Europe": {
-        "U.K.": {},
-        "Germany": {},
-        "Italy": {},
-        "France": {},
-        "Spain": {},
-        "Russia": {},
-        "Rest of Europe": {}
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
       },
-      "Asia Pacific": {
-        "China": {},
-        "India": {},
-        "Japan": {},
-        "South Korea": {},
-        "ASEAN": {},
-        "Australia": {},
-        "Rest of Asia Pacific": {}
-      },
-      "Latin America": {
-        "Brazil": {},
-        "Argentina": {},
-        "Mexico": {},
-        "Rest of Latin America": {}
-      },
-      "Middle East & Africa": {
-        "GCC": {},
-        "South Africa": {},
-        "Rest of Middle East & Africa": {}
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
       }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Canada": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Europe": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "U.K.": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Germany": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Italy": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "France": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Spain": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Russia": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Rest of Europe": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Asia Pacific": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "China": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "India": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Japan": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "South Korea": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "ASEAN": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Australia": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Rest of Asia Pacific": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Latin America": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Brazil": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Argentina": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Mexico": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Rest of Latin America": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Middle East & Africa": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "GCC": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "South Africa": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
+    }
+  },
+  "Rest of Middle East & Africa": {
+    "By Offering": {
+      "Hardware": {
+        "Sensors & Detectors": {},
+        "Optical Components (Filters, Lenses, Diffraction Gratings)": {},
+        "Light Sources (LED, Laser)": {},
+        "Processing Units and Embedded Hardware": {},
+        "Supporting Hardware (Power Supply, Thermal, Enclosures, Connectivity)": {}
+      },
+      "Software": {
+        "Spectral Data Processing & Analysis Software": {},
+        "AI/ML-based Spectral Interpretation Software": {},
+        "Imaging & Visualization Software": {},
+        "Calibration & Correction Software": {},
+        "Data Management & Integration Platforms": {}
+      },
+      "Services": {
+        "System Integration & Deployment Services": {},
+        "Calibration & Maintenance Services": {},
+        "Managed Data Analysis & Interpretation Services": {},
+        "Training & Technical Support Services": {},
+        "Consulting & Custom Solution Development": {}
+      }
+    },
+    "By Product Type": {
+      "Hyperspectral Sensors": {},
+      "Multispectral Sensors": {}
+    },
+    "By Technology": {
+      "Imaging Spectral Sensors": {},
+      "Non-Imaging Spectral Sensors": {}
+    },
+    "By Spectral Range": {
+      "Near-Infrared (NIR)": {},
+      "Short-Wave Infrared (SWIR)": {},
+      "Visible (VIS)": {},
+      "Mid-Wave Infrared (MWIR)": {},
+      "Ultraviolet (UV)": {},
+      "Long-Wave Infrared (LWIR)": {}
+    },
+    "By Form Factor": {
+      "Portable": {},
+      "Fixed and Installed": {}
+    },
+    "By End User": {
+      "Agriculture": {},
+      "Healthcare & Life Sciences": {},
+      "Industrial & Manufacturing": {},
+      "Food & Beverage": {},
+      "Environmental Monitoring": {},
+      "Other (Aerospace & Defense, Research & Academia, etc.)": {}
     }
   }
 }
