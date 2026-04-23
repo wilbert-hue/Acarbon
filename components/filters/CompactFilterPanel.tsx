@@ -14,7 +14,7 @@ interface SelectedSegmentItem {
 export function CompactFilterPanel() {
   const { data, filters, updateFilters } = useDashboardStore()
   const [selectedSegmentType, setSelectedSegmentType] = useState<string>(
-    filters.segmentType || (data?.dimensions?.segments ? Object.keys(data.dimensions.segments)[0] : 'By Technology')
+    filters.segmentType || (data?.dimensions?.segments ? Object.keys(data.dimensions.segments)[0] : 'By Raw Material Source')
   )
   const [selectedSegments, setSelectedSegments] = useState<SelectedSegmentItem[]>([])
   const [currentSegmentSelection, setCurrentSegmentSelection] = useState<string>('')
@@ -276,9 +276,6 @@ export function CompactFilterPanel() {
           className="w-full px-2 py-1 text-xs text-black border border-gray-300 rounded mt-1"
           size={3}
         >
-          {data.dimensions.geographies.global && data.dimensions.geographies.global.length > 0 && (
-            <option value={data.dimensions.geographies.global[0]}>{data.dimensions.geographies.global[0]}</option>
-          )}
           {data.dimensions.geographies.regions.map(region => (
             <optgroup key={region} label={region}>
               <option value={region}>{region}</option>

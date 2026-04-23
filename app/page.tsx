@@ -5,7 +5,7 @@ import { useDashboardStore } from '@/lib/store'
 import { createMockData } from '@/lib/mock-data'
 import { FilterPanel } from '@/components/filters/FilterPanel'
 import { EnhancedFilterPanel } from '@/components/filters/EnhancedFilterPanel'
-import { GroupedBarChart } from '@/components/charts/GroupedBarChart'
+import GroupedBarChart from '@/components/charts/GroupedBarChart'
 import { MultiLineChart } from '@/components/charts/MultiLineChart'
 import { MatrixHeatmap } from '@/components/charts/MatrixHeatmap'
 import { ComparisonTable } from '@/components/charts/ComparisonTable'
@@ -13,22 +13,37 @@ import { WaterfallChart } from '@/components/charts/WaterfallChart'
 import { D3BubbleChartIndependent } from '@/components/charts/D3BubbleChartIndependent'
 import { CompetitiveIntelligence } from '@/components/charts/CompetitiveIntelligence'
 import CustomerIntelligenceHeatmap from '@/components/charts/CustomerIntelligenceHeatmap'
-import DistributorsIntelligence from '@/components/charts/DistributorsIntelligenceTable'
 import CustomerIntelligenceDatabase from '@/components/charts/CustomerIntelligenceDatabase'
+import { DistributorIntelligenceSummaryTable } from '@/components/intelligence/DistributorIntelligenceSummaryTable'
+import { ImportAnalysisView } from '@/components/intelligence/ImportAnalysisView'
+import { ImportPricingView } from '@/components/intelligence/ImportPricingView'
+import { INTELLIGENCE_PANEL_NAV } from '@/lib/intelligence-panel'
 import { InsightsPanel } from '@/components/InsightsPanel'
 import { FilterPresets } from '@/components/filters/FilterPresets'
 import { ChartGroupSelector } from '@/components/filters/ChartGroupSelector'
 import { CustomScrollbar } from '@/components/ui/CustomScrollbar'
 import { GlobalKPICards } from '@/components/GlobalKPICards'
 import { getChartsForGroup } from '@/lib/chart-groups'
-import { Lightbulb, X, Layers, LayoutGrid, Settings } from 'lucide-react'
+import { Lightbulb, X, Layers, LayoutGrid, Users, Building2, Globe2, DollarSign, type LucideIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Footer } from '@/components/Footer'
 import Image from 'next/image'
 
 export default function DashboardPage() {
   const router = useRouter()
-  const { setData, setLoading, setError, data, isLoading, error, filters, selectedChartGroup, dashboardName } = useDashboardStore()
+  const {
+    setData,
+    setLoading,
+    setError,
+    data,
+    isLoading,
+    error,
+    filters,
+    selectedChartGroup,
+    dashboardName,
+    intelligencePanel,
+    setIntelligencePanel,
+  } = useDashboardStore()
   const [mounted, setMounted] = useState(false)
   const [hasCheckedStore, setHasCheckedStore] = useState(false)
   const [activeTab, setActiveTab] = useState<'bar' | 'line' | 'heatmap' | 'table' | 'waterfall' | 'bubble' | 'competitive-intelligence' | 'customer-intelligence' | 'customer-intelligence-database'>('bar')
@@ -36,6 +51,15 @@ export default function DashboardPage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [viewMode, setViewMode] = useState<'tabs' | 'vertical'>('tabs')
   const sidebarScrollRef = useRef<HTMLDivElement>(null)
+
+  const isIntelligenceMode = intelligencePanel !== null
+
+  const intelligenceTabIcons: Record<(typeof INTELLIGENCE_PANEL_NAV)[number]['id'], LucideIcon> = {
+    'customer-intelligence': Users,
+    'distributor-intelligence': Building2,
+    'import-analysis': Globe2,
+    'import-pricing': DollarSign,
+  }
 
   // Get visible charts based on selected chart group
   const visibleCharts = getChartsForGroup(selectedChartGroup)
@@ -60,11 +84,16 @@ export default function DashboardPage() {
 
   // Auto-switch to first available tab when chart group changes
   useEffect(() => {
+    if (intelligencePanel !== null) return
     const firstVisibleChart = visibleCharts[0]
     if (firstVisibleChart && chartIdToTab[firstVisibleChart]) {
       setActiveTab(chartIdToTab[firstVisibleChart])
     }
-  }, [selectedChartGroup])
+  }, [selectedChartGroup, intelligencePanel])
+
+  useEffect(() => {
+    if (intelligencePanel !== null) setViewMode('tabs')
+  }, [intelligencePanel])
 
   // Auto-switch to heatmap when matrix mode is selected
   useEffect(() => {
@@ -204,7 +233,7 @@ export default function DashboardPage() {
                 Coherent Dashboard
               </h1>
               <h2 className="text-sm text-black">
-                {dashboardName || 'Global Normothermic Machine Perfusion Market'}
+                {dashboardName || 'Activated Carbon Market'}
               </h2>
             </div>
           </div>
@@ -272,35 +301,55 @@ export default function DashboardPage() {
             <div className="bg-white rounded-lg shadow">
               <div className="border-b border-gray-200">
                 <div className="flex justify-between items-center">
-                  <nav className="flex items-center -mb-px">
-                    {/* View Mode Toggle */}
-                    <div className="flex gap-1 mr-4 ml-4 py-2">
-                      <button
-                        onClick={() => setViewMode('tabs')}
-                        className={`p-1.5 rounded ${
-                          viewMode === 'tabs' 
-                            ? 'bg-blue-100 text-blue-600' 
-                            : 'text-black hover:text-black'
-                        }`}
-                        title="Tab View"
-                      >
-                        <Layers className="h-4 w-4" />
-                      </button>
-                      <button
-                        onClick={() => setViewMode('vertical')}
-                        className={`p-1.5 rounded ${
-                          viewMode === 'vertical' 
-                            ? 'bg-blue-100 text-blue-600' 
-                            : 'text-black hover:text-black'
-                        }`}
-                        title="Vertical View (All Charts)"
-                      >
-                        <LayoutGrid className="h-4 w-4" />
-                      </button>
-                    </div>
-                    
-                    {/* Tab Buttons - Only show in tabs mode */}
-                    {viewMode === 'tabs' && (
+                  <nav className="flex flex-wrap items-center -mb-px">
+                    {!isIntelligenceMode && (
+                      <div className="flex gap-1 mr-4 ml-4 py-2">
+                        <button
+                          onClick={() => setViewMode('tabs')}
+                          className={`p-1.5 rounded ${
+                            viewMode === 'tabs' 
+                              ? 'bg-blue-100 text-blue-600' 
+                              : 'text-black hover:text-black'
+                          }`}
+                          title="Tab View"
+                        >
+                          <Layers className="h-4 w-4" />
+                        </button>
+                        <button
+                          onClick={() => setViewMode('vertical')}
+                          className={`p-1.5 rounded ${
+                            viewMode === 'vertical' 
+                              ? 'bg-blue-100 text-blue-600' 
+                              : 'text-black hover:text-black'
+                          }`}
+                          title="Vertical View (All Charts)"
+                        >
+                          <LayoutGrid className="h-4 w-4" />
+                        </button>
+                      </div>
+                    )}
+
+                    {isIntelligenceMode
+                      ? INTELLIGENCE_PANEL_NAV.map((panel) => {
+                          const Icon = intelligenceTabIcons[panel.id]
+                          const active = intelligencePanel === panel.id
+                          return (
+                            <button
+                              key={panel.id}
+                              type="button"
+                              onClick={() => setIntelligencePanel(panel.id)}
+                              className={`inline-flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                                active
+                                  ? 'border-blue-500 text-blue-600'
+                                  : 'border-transparent text-black hover:border-gray-300'
+                              }`}
+                            >
+                              <Icon className="h-4 w-4 shrink-0" />
+                              {panel.label}
+                            </button>
+                          )
+                        })
+                      : viewMode === 'tabs' && (
                       <>
                         {isChartVisible('grouped-bar') && (
                           <button
@@ -424,7 +473,30 @@ export default function DashboardPage() {
 
               {/* Chart Content */}
               <div className="p-6">
-                {viewMode === 'tabs' ? (
+                {isIntelligenceMode && intelligencePanel ? (
+                  <>
+                    {intelligencePanel === 'customer-intelligence' && (
+                      <div id="customer-intelligence-main">
+                        <CustomerIntelligenceDatabase title="Customer Intelligence Database" />
+                      </div>
+                    )}
+                    {intelligencePanel === 'distributor-intelligence' && (
+                      <div id="distributor-intelligence-main">
+                        <DistributorIntelligenceSummaryTable />
+                      </div>
+                    )}
+                    {intelligencePanel === 'import-analysis' && (
+                      <div id="import-analysis-main">
+                        <ImportAnalysisView />
+                      </div>
+                    )}
+                    {intelligencePanel === 'import-pricing' && (
+                      <div id="import-pricing-main">
+                        <ImportPricingView />
+                      </div>
+                    )}
+                  </>
+                ) : viewMode === 'tabs' ? (
                   <>
                     {activeTab === 'bar' && (
                       <div id="grouped-bar-chart">
@@ -497,10 +569,7 @@ export default function DashboardPage() {
                           />
                         </div>
                         <div className="mt-8 pt-8 border-t border-gray-200">
-                          <DistributorsIntelligence
-                            title="Distributors Intelligence Database"
-                            height={500}
-                          />
+                          <DistributorIntelligenceSummaryTable />
                         </div>
                       </div>
                     )}
@@ -594,11 +663,8 @@ export default function DashboardPage() {
                           />
                         </div>
                         <div>
-                          <h3 className="text-lg font-semibold text-black mb-4">📦 Distributors Intelligence Database</h3>
-                          <DistributorsIntelligence
-                            title="Distributors Intelligence Database"
-                            height={500}
-                          />
+                          <h3 className="text-lg font-semibold text-black mb-4">📦 Distributors Intelligence</h3>
+                          <DistributorIntelligenceSummaryTable />
                         </div>
                       </div>
                     )}

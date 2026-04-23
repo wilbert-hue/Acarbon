@@ -1,63 +1,68 @@
 {
   "Global": {
-    "By Type": {
-      "Sub-Normothermic Perfusion (20–34°C)": {},
-      "Warm or Normothermic Perfusion (35–37°C)": {}
+    "By Raw Material Source": {
+      "Coal-Based Activated Carbon": {
+        "Bituminous Coal-Based": {},
+        "Lignite/Sub-Bituminous Coal-Based": {},
+        "Anthracite Coal-Based": {}
+      },
+      "Coconut Shell-Based Activated Carbon": {},
+      "Wood-Based Activated Carbon": {},
+      "Peat-Based Activated Carbon": {},
+      "Other Biomass-Based Activated Carbon (Bamboo-Based, etc.)": {}
     },
-    "By Organ Type": {
-      "Liver": {},
-      "Heart": {},
-      "Lung": {},
-      "Kidney": {},
-      "Others (Pancreas, Small bowel / Intestine, Composite Tissues / Limb Perfusion (emerging use cases))": {}
+    "By Product Form": {
+      "Powdered Activated Carbon (PAC)": {},
+      "Granular Activated Carbon (GAC)": {},
+      "Extruded / Pelletized Activated Carbon (EAC)": {},
+      "Others (Bead / Spherical Activated Carbon, etc.)": {}
     },
     "Application / Use Case": {
-      "Organ Preservation": {},
-      "Viability Assessment": {},
-      "Physiologic Transport": {},
-      "Reconditioning Marginal Organs": {},
-      "Others (Research Use / Protocol development)": {}
+      "Gold Mining": {
+        "Carbon-in-Leach (CIL)": {},
+        "Carbon-in-Pulp (CIP)": {},
+        "Carbon-in-Column (CIC)": {},
+        "Others": {}
+      },
+      "Other Mining & Metallurgical Processing": {
+        "Precious Metal Recovery": {},
+        "Base Metal Process Purification": {},
+        "Metallurgical Water Treatment": {},
+        "Others": {}
+      },
+      "Water Treatment": {
+        "Potable / Drinking Water Treatment": {},
+        "Industrial Water Treatment": {},
+        "Wastewater / Effluent Treatment": {},
+        "Mine Water Treatment": {}
+      },
+      "Air & Gas Purification": {},
+      "Food & Beverage Processing": {},
+      "Pharmaceutical & Life Sciences Processing": {},
+      "Chemical & Industrial Processing": {},
+      "Oil, Gas & Energy-Linked Purification": {},
+      "Others (Consumer, Commercial & Specialty Filtration, etc.)": {}
     },
-    "By End User": {
-      "Hospitals & Clinics": {},
-      "Specialty Clinic/Centers": {},
-      "Transplant Centers": {},
-      "Others (Research Institutes/Centers, Organ Procurement Organizations, etc.)": {}
+    "By Supply Type": {
+      "Virgin Activated Carbon": {},
+      "Reactivated / Regenerated Activated Carbon": {}
     },
     "By Region": {
-      "North America": {
-        "U.S.": {},
-        "Canada": {}
-      },
-      "Europe": {
-        "U.K.": {},
-        "Germany": {},
-        "Italy": {},
-        "France": {},
-        "Spain": {},
-        "Russia": {},
-        "Rest of Europe": {}
-      },
-      "Asia Pacific": {
-        "China": {},
-        "India": {},
-        "Japan": {},
-        "South Korea": {},
-        "ASEAN": {},
-        "Australia": {},
-        "Rest of Asia Pacific": {}
-      },
-      "Latin America": {
-        "Brazil": {},
-        "Argentina": {},
-        "Mexico": {},
-        "Rest of Latin America": {}
-      },
-      "Middle East & Africa": {
-        "GCC": {},
+      "Africa": {
         "South Africa": {},
-        "Rest of Middle East & Africa": {}
-      }
+        "Ghana": {},
+        "Mali": {},
+        "Burkina Faso": {},
+        "Tanzania": {},
+        "Côte d'Ivoire": {},
+        "Zimbabwe": {},
+        "Democratic Republic of the Congo": {},
+        "Guinea": {},
+        "Sudan": {},
+        "Mauritania": {}
+      },
+      "Russia": {},
+      "Australia": {}
     }
   }
 }

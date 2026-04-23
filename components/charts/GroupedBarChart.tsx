@@ -12,7 +12,7 @@ import {
   ResponsiveContainer
 } from 'recharts'
 import { CHART_THEME, getChartColor, CHART_COLORS } from '@/lib/chart-theme'
-import { filterData, prepareGroupedBarData, prepareIntelligentMultiLevelData, getUniqueGeographies, getUniqueSegments, getGeographyProportions } from '@/lib/data-processor'
+import { filterData, prepareGroupedBarData, prepareIntelligentMultiLevelData, getUniqueGeographies, getUniqueSegments, getGeographyProportions, hasExplicitSegmentsForType, getSelectedSegmentNamesForType } from '@/lib/data-processor'
 import { useDashboardStore } from '@/lib/store'
 import type { DataRecord } from '@/lib/types'
 
@@ -33,26 +33,15 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
       ? data.data.value.geography_segment_matrix
       : data.data.volume.geography_segment_matrix
 
-    // IMPORTANT: Determine effective aggregation level BEFORE filtering
-    // This ensures filterData uses the correct logic based on user's segment selection
     const advancedSegments = filters.advancedSegments || []
-    const segmentsFromSameType = advancedSegments.filter(
-      (seg: any) => seg.type === filters.segmentType
-    )
-    const hasUserSelectedSegments = segmentsFromSameType.length > 0
+    const hasUserSelectedSegments = hasExplicitSegmentsForType(filters)
+    const selectedSegmentNamesForType = getSelectedSegmentNamesForType(filters)
 
-    // Determine effective aggregation level for BOTH filtering and chart preparation
-    // When user selects a parent segment (like "Parenteral"), we want to show its children
-    // (Intravenous, Intramuscular, Subcutaneous) as separate bars, NOT aggregate them
     let effectiveAggregationLevel: number | null = filters.aggregationLevel ?? null
 
-    // CRITICAL: When user has explicitly selected segments, ALWAYS use null
-    // This prevents any Level 2 aggregation and shows individual sub-segments
     if (hasUserSelectedSegments) {
-      // User selected segments - show individual records (children of selected parents)
       effectiveAggregationLevel = null
     } else if (effectiveAggregationLevel === null) {
-      // No segments selected - use Level 2 to show parent segments aggregated
       effectiveAggregationLevel = 2
     }
 
@@ -60,7 +49,8 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
       totalDataset: dataset.length,
       hasUserSelectedSegments,
       effectiveAggregationLevel,
-      segmentsFromSameType: segmentsFromSameType.map((s: any) => s.segment),
+      selectedSegmentNamesForType,
+      simpleSegments: filters.segments,
       advancedSegments: advancedSegments.map((s: any) => ({ type: s.type, segment: s.segment })),
       filtersSegmentType: filters.segmentType,
       filtersAggregationLevel: filters.aggregationLevel,
@@ -101,7 +91,7 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
       effectiveAggregationLevel,
       allSegmentNames,
       hasUserSelectedSegments,
-      selectedSegments: segmentsFromSameType.map((s: any) => s.segment),
+      selectedSegments: selectedSegmentNamesForType,
       sampleFiltered: filtered.slice(0, 10).map(r => ({
         segment: r.segment,
         is_aggregated: r.is_aggregated,
@@ -113,8 +103,8 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
 
     // CRITICAL: Verify that when user selected a parent segment, we got the child records
     // If we only have the parent segment in filtered data, something went wrong in filtering
-    if (hasUserSelectedSegments && segmentsFromSameType.length === 1) {
-      const selectedSegment = segmentsFromSameType[0].segment
+    if (hasUserSelectedSegments && selectedSegmentNamesForType.length === 1) {
+      const selectedSegment = selectedSegmentNamesForType[0]
       // Check if filtered data contains the selected segment directly (bad) or its children (good)
       const hasParentInData = allSegmentNames.includes(selectedSegment)
       const hasOnlyParent = hasParentInData && allSegmentNames.length === 1
@@ -605,17 +595,23 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
         <div className="mt-4 text-sm text-black text-center">
           {chartData.isStacked ? (
             <>
-              Comparing {chartData.stackedSeries?.primary.length} {filters.viewMode === 'segment-mode' ? 'segments' : 'geographies'}
-              {' '}with {chartData.stackedSeries?.secondary.length} {filters.viewMode === 'segment-mode' ? 'geography' : 'segment'} breakdown
+              Comparing {chartData.stackedSeries?.primary.length}{' '}
+              {filters.viewMode === 'segment-mode' ? 'segments' : 'geographies'} with{' '}
+              {chartData.stackedSeries?.secondary.length}{' '}
+              {filters.viewMode === 'segment-mode' ? 'geography' : 'segment'} breakdown
             </>
           ) : (
             <>
-        Comparing {chartData.series.length} {filters.viewMode === 'segment-mode' ? 'segments' : 'geographies'} 
+              Comparing {chartData.series.length}{' '}
+              {filters.viewMode === 'segment-mode' ? 'segments' : 'geographies'}
             </>
           )}
-        {' '}from {filters.yearRange[0]} to {filters.yearRange[1]}
+          {' '}
+          from {filters.yearRange[0]} to {filters.yearRange[1]}
         </div>
       )}
     </div>
   )
 }
+
+export default GroupedBarChart

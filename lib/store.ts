@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import type { FilterState, ComparisonData } from './types'
 import type { ChartGroupId } from './chart-groups'
 import { DEFAULT_CHART_GROUP } from './chart-groups'
+import type { IntelligencePanelId } from './intelligence-panel'
 
 interface DashboardStore {
   data: ComparisonData | null
@@ -17,6 +18,8 @@ interface DashboardStore {
   fromDashboardBuilder: boolean // Track if data came from dashboard builder
   dashboardBuilderFiles: { valueFile: File | null; volumeFile: File | null; projectName: string } | null
   intelligenceType: 'customer' | 'distributor' | null // Track which intelligence type is selected
+  /** When set, main area shows intelligence modules (tabs) instead of demand charts */
+  intelligencePanel: IntelligencePanelId | null
   customerIntelligenceData: any[] | null // Store customer intelligence data
   distributorIntelligenceData: any[] | null // Store distributor intelligence data
   parentHeaders: { prop1: string; prop2: string; prop3: string } | null // Store parent headers for propositions
@@ -37,6 +40,7 @@ interface DashboardStore {
   resetFilters: () => void
   resetOpportunityFilters: () => void
   setSelectedChartGroup: (groupId: ChartGroupId) => void
+  setIntelligencePanel: (panel: IntelligencePanelId | null) => void
   loadDefaultFilters: () => void // Load default filters based on data
   loadDefaultOpportunityFilters: () => void // Load default opportunity filters
   saveGeographyFiltersForSegmentType: (segmentType: string, geographies: string[]) => void
@@ -53,6 +57,11 @@ interface DashboardStore {
   setCompetitiveIntelligenceData: (data: { headers: string[]; rows: Record<string, any>[] } | null) => void
   setDashboardName: (name: string | null) => void
   setCurrency: (currency: 'USD' | 'INR') => void
+}
+
+/** Remove world roll-up from selectable geographies (UI lists exclude it). */
+function stripGlobalGeographies(geos: string[]): string[] {
+  return geos.filter((g) => g !== 'Global')
 }
 
 // Helper function to check if data has B2B/B2C segmentation
@@ -88,8 +97,8 @@ function getDefaultFilters(data: ComparisonData | null): FilterState {
   const baseYear = data.metadata.base_year
   const forecastYear = data.metadata.forecast_year
   
-  // Get first geography for default view
-  const firstGeography = data.dimensions.geographies.all_geographies?.[0] || ''
+  const allGeo = data.dimensions.geographies.all_geographies || []
+  const firstGeography = allGeo.find((g) => g !== 'Global') || ''
   
   // Get first few segments from the first segment type (for default view)
   const segmentDimension = data.dimensions.segments[firstSegmentType]
@@ -135,8 +144,8 @@ function getDefaultOpportunityFilters(data: ComparisonData | null): FilterState 
   const baseYear = data.metadata.base_year
   const forecastYear = data.metadata.forecast_year
   
-  // For opportunity matrix, default to first geography (usually India or global)
-  const firstGeography = data.dimensions.geographies.all_geographies?.[0] || ''
+  const allGeo = data.dimensions.geographies.all_geographies || []
+  const firstGeography = allGeo.find((g) => g !== 'Global') || ''
   
   // For opportunity matrix, don't pre-select segments - let user select them
   // This avoids issues where segments don't match the actual data structure
@@ -176,6 +185,7 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
   fromDashboardBuilder: false,
   dashboardBuilderFiles: null,
   intelligenceType: null,
+  intelligencePanel: null,
   customerIntelligenceData: null,
   distributorIntelligenceData: null,
   parentHeaders: null,
@@ -208,7 +218,8 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
       opportunityFilters: defaultOpportunityFilters,
       defaultFiltersLoaded: true,
       opportunityFiltersLoaded: true,
-      geographyFiltersBySegmentType: {} // Clear geography filters for new market
+      geographyFiltersBySegmentType: {}, // Clear geography filters for new market
+      intelligencePanel: null,
     })
   },
   
@@ -223,7 +234,8 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
       defaultFiltersLoaded: false,
       opportunityFiltersLoaded: false,
       geographyFiltersBySegmentType: {},
-      selectedChartGroup: DEFAULT_CHART_GROUP
+      selectedChartGroup: DEFAULT_CHART_GROUP,
+      intelligencePanel: null,
     })
   },
   
@@ -298,9 +310,9 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
         if (shouldClearGeographies) {
           newGeographies = []
         } else if (newFilters.geographies !== undefined) {
-          newGeographies = newFilters.geographies || []
+          newGeographies = stripGlobalGeographies(newFilters.geographies || [])
         } else {
-          newGeographies = state.filters.geographies
+          newGeographies = stripGlobalGeographies(state.filters.geographies)
         }
         
         // Preserve existing values - don't allow null/undefined to overwrite unless explicitly set
@@ -339,7 +351,9 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
       // Normal filter update (no segment type change)
       // If geographies are being updated, also save them for current segment type
       if (newFilters.geographies !== undefined && state.filters.segmentType) {
-        state.geographyFiltersBySegmentType[state.filters.segmentType] = [...(newFilters.geographies || [])]
+        state.geographyFiltersBySegmentType[state.filters.segmentType] = stripGlobalGeographies([
+          ...(newFilters.geographies || []),
+        ])
       }
       
       // Preserve existing values - don't allow null/undefined to overwrite unless explicitly set
@@ -348,7 +362,9 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
         // Only update aggregationLevel if it's explicitly provided (including null)
         ...(newFilters.aggregationLevel !== undefined && { aggregationLevel: newFilters.aggregationLevel }),
         // For other filters, merge but preserve existing values
-        ...(newFilters.geographies !== undefined && { geographies: newFilters.geographies || [] }),
+        ...(newFilters.geographies !== undefined && {
+          geographies: stripGlobalGeographies(newFilters.geographies || []),
+        }),
         ...(newFilters.segments !== undefined && { segments: newFilters.segments || [] }),
         ...(newFilters.segmentType !== undefined && { segmentType: newFilters.segmentType || '' }),
         ...(newFilters.yearRange !== undefined && { yearRange: newFilters.yearRange || [2026, 2033] }),
@@ -376,7 +392,7 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
     set((state) => ({
       geographyFiltersBySegmentType: {
         ...state.geographyFiltersBySegmentType,
-        [segmentType]: [...geographies]
+        [segmentType]: stripGlobalGeographies([...geographies]),
       }
     }))
   },
@@ -433,9 +449,19 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
     })
   },
   
+  setIntelligencePanel: (panel) => {
+    const intelligenceType =
+      panel === 'customer-intelligence'
+        ? 'customer'
+        : panel === 'distributor-intelligence'
+          ? 'distributor'
+          : null
+    set({ intelligencePanel: panel, intelligenceType })
+  },
+
   setSelectedChartGroup: (groupId) => {
     console.log('🔧 Store: setSelectedChartGroup called with:', groupId)
-    set({ selectedChartGroup: groupId })
+    set({ selectedChartGroup: groupId, intelligencePanel: null })
     // Load default opportunity filters when switching to opportunity matrix
     if (groupId === 'coherent-opportunity') {
       const currentData = get().data
@@ -456,7 +482,9 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
     set((state) => {
       const updatedFilters: FilterState = {
         ...state.opportunityFilters,
-        ...(newFilters.geographies !== undefined && { geographies: newFilters.geographies || [] }),
+        ...(newFilters.geographies !== undefined && {
+          geographies: stripGlobalGeographies(newFilters.geographies || []),
+        }),
         ...(newFilters.segments !== undefined && { segments: newFilters.segments || [] }),
         ...(newFilters.segmentType !== undefined && { segmentType: newFilters.segmentType || '' }),
         ...(newFilters.yearRange !== undefined && { yearRange: newFilters.yearRange || [2021, 2033] }),

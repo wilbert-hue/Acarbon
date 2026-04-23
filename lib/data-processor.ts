@@ -1,5 +1,23 @@
 import type { DataRecord, FilterState, ChartDataPoint, HeatmapCell, ComparisonTableRow } from './types'
 
+/** Segment names selected for the active `segmentType` (advanced multi-type + simple multi-select). */
+export function getSelectedSegmentNamesForType(
+  filters: FilterState & { advancedSegments?: any[] }
+): string[] {
+  const advanced = (filters.advancedSegments || [])
+    .filter((seg: any) => seg.type === filters.segmentType)
+    .map((seg: any) => seg.segment)
+  const simple = filters.segments || []
+  return Array.from(new Set([...advanced, ...simple]))
+}
+
+/** True when the user narrowed the active segment type (must align with `filterData` / chart prep). */
+export function hasExplicitSegmentsForType(
+  filters: FilterState & { advancedSegments?: any[] }
+): boolean {
+  return getSelectedSegmentNamesForType(filters).length > 0
+}
+
 /**
  * Calculate proportional distribution shares for geographies based on "By Region" data.
  * When Global-level data needs to be distributed across selected geographies,
@@ -706,32 +724,17 @@ export function prepareGroupedBarData(
   const { yearRange, viewMode, geographies, segments, aggregationLevel } = filters
   const [startYear, endYear] = yearRange
 
-  // Get selected segments for aggregation
-  const advancedSegments = filters.advancedSegments || []
-  const selectedSegmentNames = advancedSegments
-    .filter((seg: any) => seg.type === filters.segmentType)
-    .map((seg: any) => seg.segment)
+  const selectedSegmentNames = getSelectedSegmentNamesForType(filters)
 
   // Determine effective aggregation level (same logic as filterData)
-  // This ensures chart data preparation uses the same level detection
   let effectiveAggregationLevel = aggregationLevel
 
-  // IMPORTANT: When user has EXPLICITLY selected segments (via Add Segment button),
-  // we should NOT apply automatic Level 2 aggregation - we want to show the sub-segments individually
   const hasUserSelectedSegments = selectedSegmentNames.length > 0
 
   if (effectiveAggregationLevel === null || effectiveAggregationLevel === undefined) {
-    const segmentsFromSameType = advancedSegments.filter(
-      (seg: any) => seg.type === filters.segmentType
-    )
-    const hasSegmentsForCurrentType = segmentsFromSameType.length > 0
-
-    if (!hasSegmentsForCurrentType) {
-      // No segments selected for this segment type - default to Level 2 (show parent segments)
+    if (!hasExplicitSegmentsForType(filters)) {
       effectiveAggregationLevel = 2
     } else {
-      // User selected specific segments - don't force Level 2 aggregation
-      // This allows showing sub-segments when a parent is selected
       effectiveAggregationLevel = null
     }
   }
@@ -1142,11 +1145,7 @@ export function prepareLineChartData(
   const { yearRange, viewMode, aggregationLevel } = filters
   const [startYear, endYear] = yearRange
 
-  // Get selected segments for aggregation
-  const advancedSegments = filters.advancedSegments || []
-  const selectedSegmentNames = advancedSegments
-    .filter((seg: any) => seg.type === filters.segmentType)
-    .map((seg: any) => seg.segment)
+  const selectedSegmentNames = getSelectedSegmentNamesForType(filters)
 
   // IMPORTANT: When user has EXPLICITLY selected segments (via Add Segment button),
   // we should NOT apply automatic Level 2 aggregation - we want to show the sub-segments individually
@@ -1155,12 +1154,7 @@ export function prepareLineChartData(
   // Determine effective aggregation level (same logic as filterData and prepareGroupedBarData)
   let effectiveAggregationLevel = aggregationLevel
   if (effectiveAggregationLevel === null || effectiveAggregationLevel === undefined) {
-    const segmentsFromSameType = advancedSegments.filter(
-      (seg: any) => seg.type === filters.segmentType
-    )
-    const hasSegmentsForCurrentType = segmentsFromSameType.length > 0
-
-    if (!hasSegmentsForCurrentType) {
+    if (!hasExplicitSegmentsForType(filters)) {
       // No segments selected for this segment type - default to Level 2 (show parent segments)
       effectiveAggregationLevel = 2
     } else {
@@ -1365,25 +1359,12 @@ export function prepareTableData(
   const { yearRange, viewMode, aggregationLevel } = filters
   const [startYear, endYear] = yearRange
 
-  // Get selected segments
-  const advancedSegments = filters.advancedSegments || []
-  const selectedSegmentNames = advancedSegments
-    .filter((seg: any) => seg.type === filters.segmentType)
-    .map((seg: any) => seg.segment)
-
-  // IMPORTANT: When user has EXPLICITLY selected segments (via Add Segment button),
-  // we should NOT apply automatic Level 2 aggregation - we want to show the sub-segments individually
-  const hasUserSelectedSegments = selectedSegmentNames.length > 0
+  const selectedSegmentNames = getSelectedSegmentNamesForType(filters)
 
   // Determine effective aggregation level
   let effectiveAggregationLevel = aggregationLevel
   if (effectiveAggregationLevel === null || effectiveAggregationLevel === undefined) {
-    const segmentsFromSameType = advancedSegments.filter(
-      (seg: any) => seg.type === filters.segmentType
-    )
-    const hasSegmentsForCurrentType = segmentsFromSameType.length > 0
-
-    if (!hasSegmentsForCurrentType) {
+    if (!hasExplicitSegmentsForType(filters)) {
       effectiveAggregationLevel = 2
     } else {
       // User selected specific segments - don't force Level 2 aggregation
@@ -1392,7 +1373,7 @@ export function prepareTableData(
   }
 
   // Only apply Level 2 aggregation when user hasn't explicitly selected segments
-  const isLevel2 = effectiveAggregationLevel === 2 && !hasUserSelectedSegments
+  const isLevel2 = effectiveAggregationLevel === 2 && selectedSegmentNames.length === 0
 
   // Build child-to-parent mapping for Level 2 aggregation
   const childToParentMap = new Map<string, string>()
@@ -1561,34 +1542,19 @@ export function prepareWaterfallData(
 ): Array<{ name: string; value: number; type: 'start' | 'positive' | 'negative' | 'end' }> {
   const [startYear, endYear] = filters.yearRange
 
-  // Get selected segments
-  const advancedSegments = filters.advancedSegments || []
-  const selectedSegmentNames = advancedSegments
-    .filter((seg: any) => seg.type === filters.segmentType)
-    .map((seg: any) => seg.segment)
-
-  // IMPORTANT: When user has EXPLICITLY selected segments (via Add Segment button),
-  // we should NOT apply automatic Level 2 aggregation - we want to show the sub-segments individually
-  const hasUserSelectedSegments = selectedSegmentNames.length > 0
+  const selectedSegmentNames = getSelectedSegmentNamesForType(filters)
 
   // Determine effective aggregation level
   let effectiveAggregationLevel = filters.aggregationLevel
   if (effectiveAggregationLevel === null || effectiveAggregationLevel === undefined) {
-    const segmentsFromSameType = advancedSegments.filter(
-      (seg: any) => seg.type === filters.segmentType
-    )
-    const hasSegmentsForCurrentType = segmentsFromSameType.length > 0
-
-    if (!hasSegmentsForCurrentType) {
+    if (!hasExplicitSegmentsForType(filters)) {
       effectiveAggregationLevel = 2
     } else {
-      // User selected specific segments - don't force Level 2 aggregation
       effectiveAggregationLevel = null
     }
   }
 
-  // Only apply Level 2 aggregation when user hasn't explicitly selected segments
-  const isLevel2 = effectiveAggregationLevel === 2 && !hasUserSelectedSegments
+  const isLevel2 = effectiveAggregationLevel === 2 && selectedSegmentNames.length === 0
 
   // Build child-to-parent mapping for Level 2 aggregation
   const childToParentMap = new Map<string, string>()

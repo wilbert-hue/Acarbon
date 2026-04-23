@@ -3,13 +3,13 @@
 import { useMemo, useState } from 'react'
 import { Search, ArrowUpDown } from 'lucide-react'
 
-export type CustomerOwnership = 'Public' | 'Subsidiary' | 'Private'
+export type DistributorOwnership = 'Public' | 'Private' | 'Subsidiary'
 
-export interface CustomerIntelligenceRow {
+export interface DistributorIntelligenceRow {
   companyName: string
   headquarters: string
-  keyChemicals: string
-  ownership: CustomerOwnership
+  productPortfolio: string
+  ownership: DistributorOwnership
   contactName: string
   designation: string
   email: string
@@ -17,149 +17,149 @@ export interface CustomerIntelligenceRow {
   linkedIn: string
 }
 
-const CUSTOMERS: CustomerIntelligenceRow[] = [
+const DISTRIBUTORS: DistributorIntelligenceRow[] = [
   {
-    companyName: 'AngloGold Ashanti',
-    headquarters: 'Johannesburg, South Africa',
-    keyChemicals: 'Granular Activated Carbon (GAC), Coconut Shell-Based AC',
-    ownership: 'Public',
-    contactName: 'John Smith',
-    designation: 'Head of Procurement',
-    email: 'j.smith@anglogold.com',
-    phone: '+27 11 637 6000',
-    linkedIn: 'linkedin.com/in/johnsmith',
+    companyName: 'Activated Carbon Technologies (ACT)',
+    headquarters: 'Melbourne, Australia',
+    productPortfolio: 'Coconut Shell AC, Granular AC, Reactivation Services',
+    ownership: 'Private',
+    contactName: 'Mark Thompson',
+    designation: 'CEO',
+    email: 'm.thompson@act.com.au',
+    phone: '+61 3 9874 5200',
+    linkedIn: 'linkedin.com/in/markthompson',
   },
   {
-    companyName: 'Barrick Gold (Tanzania)',
-    headquarters: 'Dar es Salaam, Tanzania',
-    keyChemicals: 'Coconut Shell-Based AC, Extruded AC (EAC)',
+    companyName: 'AECI Mining Chemicals',
+    headquarters: 'Johannesburg, South Africa',
+    productPortfolio: 'Activated Carbon, Cyanide, Flotation Reagents, Flocculants',
+    ownership: 'Public',
+    contactName: 'Sipho Mabena',
+    designation: 'GM - Mining Chemicals',
+    email: 's.mabena@aeci.co.za',
+    phone: '+27 11 806 8700',
+    linkedIn: 'linkedin.com/in/siphomabena',
+  },
+  {
+    companyName: 'Axis House (Pty) Ltd.',
+    headquarters: 'Johannesburg, South Africa',
+    productPortfolio: 'Granular & Powdered Activated Carbon, Gold Elution Chemicals',
+    ownership: 'Private',
+    contactName: 'Craig Williams',
+    designation: 'Technical Sales Manager',
+    email: 'c.williams@axishouse.co.za',
+    phone: '+27 11 463 4888',
+    linkedIn: 'linkedin.com/in/craigwilliams',
+  },
+  {
+    companyName: 'Camfil APC (Mining)',
+    headquarters: 'Sydney, Australia',
+    productPortfolio: 'GAC supply, Dust & fume systems for process plants',
     ownership: 'Subsidiary',
-    contactName: 'James Mwanga',
-    designation: 'Chief Procurement Officer',
-    email: 'j.mwanga@barrick.com',
-    phone: '+255 22 260 1100',
-    linkedIn: 'linkedin.com/in/jamesmwanga',
+    contactName: 'Emma Clarke',
+    designation: 'Regional Sales Director',
+    email: 'e.clarke@camfil.com',
+    phone: '+61 2 9838 3300',
+    linkedIn: 'linkedin.com/in/emmaclarke',
   },
   {
-    companyName: 'Caledonia Mining (Zimbabwe)',
-    headquarters: 'Harare, Zimbabwe',
-    keyChemicals: 'Granular Activated Carbon (GAC), Coal-Based AC',
-    ownership: 'Public',
-    contactName: 'Tendai Moyo',
-    designation: 'Procurement Director',
-    email: 't.moyo@caledoniamining.com',
-    phone: '+263 24 275 2368',
-    linkedIn: 'linkedin.com/in/tendaimoyo',
-  },
-  {
-    companyName: 'Gold Fields Ghana',
+    companyName: 'ChemQuest Africa',
     headquarters: 'Accra, Ghana',
-    keyChemicals: 'GAC, Powdered AC for CIL circuits',
-    ownership: 'Public',
-    contactName: 'Kwame Asante',
-    designation: 'Supply Chain Lead',
-    email: 'k.asante@goldfields.com',
-    phone: '+233 30 701 0180',
-    linkedIn: 'linkedin.com/in/kwameasante',
+    productPortfolio: 'Mining reagents, GAC imports, Local blending',
+    ownership: 'Private',
+    contactName: 'Kofi Mensah',
+    designation: 'Managing Director',
+    email: 'k.mensah@chemquest-africa.com',
+    phone: '+233 30 278 9100',
+    linkedIn: 'linkedin.com/in/kofimensah',
   },
   {
-    companyName: 'Harmony Gold',
+    companyName: 'Donau Carbon Africa',
+    headquarters: 'Durban, South Africa',
+    productPortfolio: 'Coal-based GAC, Impregnated grades, Technical support',
+    ownership: 'Private',
+    contactName: 'Ruan Pretorius',
+    designation: 'Sales Manager — Mining',
+    email: 'r.pretorius@donau-carbon.co.za',
+    phone: '+27 31 564 2200',
+    linkedIn: 'linkedin.com/in/ruanpretorius',
+  },
+  {
+    companyName: 'Jacobi Carbons (African hub)',
     headquarters: 'Johannesburg, South Africa',
-    keyChemicals: 'Coconut shell GAC, Reactivated carbon services',
+    productPortfolio: 'Coconut shell & coal GAC, EAC, Service contracts',
     ownership: 'Public',
-    contactName: 'Lindiwe Nkosi',
-    designation: 'Group Procurement Manager',
-    email: 'l.nkosi@harmony.co.za',
-    phone: '+27 11 418 9200',
-    linkedIn: 'linkedin.com/in/lindiwenkosi',
+    contactName: 'Nomsa Dlamini',
+    designation: 'Key Account Manager',
+    email: 'n.dlamini@jacobi.net',
+    phone: '+27 11 452 8100',
+    linkedIn: 'linkedin.com/in/nomsadlamini',
   },
   {
-    companyName: 'IAMGOLD Essakane',
-    headquarters: 'Ouagadougou, Burkina Faso',
-    keyChemicals: 'Extruded AC, Granular AC for heap leach',
-    ownership: 'Subsidiary',
-    contactName: 'Amadou Diallo',
-    designation: 'Chief Buyer — Mining',
-    email: 'a.diallo@iamgold.com',
-    phone: '+226 25 30 1200',
-    linkedIn: 'linkedin.com/in/amadoudiallo',
-  },
-  {
-    companyName: 'Kinross Gold (Mauritania ops)',
-    headquarters: 'Nouakchott, Mauritania',
-    keyChemicals: 'GAC, Coal-based AC blends',
+    companyName: 'Kuraray (Calypso Carbon)',
+    headquarters: 'Moscow, Russia',
+    productPortfolio: 'High-activity GAC, Specialty carbon cloth & filters',
     ownership: 'Public',
-    contactName: 'Fatima El Hachimi',
-    designation: 'Regional Procurement',
-    email: 'f.elhachimi@kinross.com',
-    phone: '+222 45 25 8800',
-    linkedIn: 'linkedin.com/in/fatimaelhachimi',
+    contactName: 'Dmitry Volkov',
+    designation: 'Head of Industrial Sales',
+    email: 'd.volkov@kuraray.com',
+    phone: '+7 495 937 1800',
+    linkedIn: 'linkedin.com/in/dmitryvolkov',
   },
   {
-    companyName: 'Newmont (Sub-Saharan hub)',
-    headquarters: 'Accra, Ghana',
-    keyChemicals: 'Coconut shell AC, Specialty impregnated GAC',
-    ownership: 'Public',
-    contactName: 'David Osei',
-    designation: 'Director, Strategic Sourcing',
-    email: 'd.osei@newmont.com',
-    phone: '+233 54 312 4400',
-    linkedIn: 'linkedin.com/in/davidosei',
-  },
-  {
-    companyName: 'Perseus Mining',
-    headquarters: 'Yaoundé, Cameroon',
-    keyChemicals: 'GAC, Elution column chemicals bundle',
-    ownership: 'Public',
-    contactName: 'Marie Fouda',
-    designation: 'Head of Supply',
-    email: 'm.fouda@perseusmining.com',
-    phone: '+237 222 123 450',
-    linkedIn: 'linkedin.com/in/mariefouda',
-  },
-  {
-    companyName: 'Resolute Mining',
-    headquarters: 'Perth, Australia',
-    keyChemicals: 'Granular AC, Carbon fines management',
-    ownership: 'Public',
-    contactName: 'Tom Brennan',
-    designation: 'GM Procurement',
-    email: 't.brennan@resolutemining.com',
-    phone: '+61 8 9221 2000',
-    linkedIn: 'linkedin.com/in/tombrennan',
-  },
-  {
-    companyName: 'Sibanye-Stillwater',
+    companyName: 'Mintek Applied Technologies',
     headquarters: 'Johannesburg, South Africa',
-    keyChemicals: 'GAC, EAC, On-site reactivation partnerships',
+    productPortfolio: 'Process chemicals, AC for CIL/CIP, Elution support',
     ownership: 'Public',
-    contactName: 'Pieter van der Merwe',
-    designation: 'VP Procurement',
-    email: 'p.vandermerwe@sibanyestillwater.co.za',
-    phone: '+27 11 278 9600',
-    linkedIn: 'linkedin.com/in/pietervandermerwe',
+    contactName: 'Thabo Molefe',
+    designation: 'Business Development',
+    email: 't.molefe@mintek.co.za',
+    phone: '+27 11 709 4000',
+    linkedIn: 'linkedin.com/in/thabomolefe',
   },
   {
-    companyName: 'West African Resources',
-    headquarters: 'Ouagadougou, Burkina Faso',
-    keyChemicals: 'Coconut shell GAC, Coal-based backup grades',
+    companyName: 'Norit Africa Distributors',
+    headquarters: 'Cape Town, South Africa',
+    productPortfolio: 'Norit GAC range, Carbon change-out services',
+    ownership: 'Private',
+    contactName: 'Sarah van Niekerk',
+    designation: 'Commercial Lead',
+    email: 's.vanniekerk@norit-africa.com',
+    phone: '+27 21 555 0190',
+    linkedIn: 'linkedin.com/in/sarahvanniekerk',
+  },
+  {
+    companyName: 'Orica Mining Services',
+    headquarters: 'Melbourne, Australia',
+    productPortfolio: 'Explosives & reagents bundle, AC for gold recovery',
     ownership: 'Public',
-    contactName: 'Ibrahim Sanogo',
-    designation: 'Procurement Manager',
-    email: 'i.sanogo@westafricanresources.com',
-    phone: '+226 25 33 6600',
-    linkedIn: 'linkedin.com/in/ibrahimsanogo',
+    contactName: 'James Whitmore',
+    designation: 'Account Manager — West Africa',
+    email: 'j.whitmore@orica.com',
+    phone: '+61 3 9665 7777',
+    linkedIn: 'linkedin.com/in/jameswhitmore',
+  },
+  {
+    companyName: 'Veolia Water Technologies (Mining)',
+    headquarters: 'Lyon, France (Africa projects)',
+    productPortfolio: 'Water treatment, GAC systems, Regeneration services',
+    ownership: 'Public',
+    contactName: 'Claire Dubois',
+    designation: 'Regional Offer Manager',
+    email: 'c.dubois@veolia.com',
+    phone: '+33 4 72 67 30 00',
+    linkedIn: 'linkedin.com/in/clairedubois',
   },
 ]
 
-function ownershipPillClass(o: CustomerOwnership) {
+function ownershipPillClass(o: DistributorOwnership) {
   switch (o) {
     case 'Public':
       return 'bg-sky-100 text-sky-900'
-    case 'Subsidiary':
-      return 'bg-violet-100 text-violet-900'
     case 'Private':
       return 'bg-emerald-100 text-emerald-900'
+    case 'Subsidiary':
+      return 'bg-violet-100 text-violet-900'
     default:
       return 'bg-gray-100 text-gray-800'
   }
@@ -170,44 +170,38 @@ function linkedInHref(url: string) {
   return `https://${url}`
 }
 
-interface CustomerIntelligenceDatabaseProps {
-  title?: string
-  height?: number
-}
-
-export default function CustomerIntelligenceDatabase(_props: CustomerIntelligenceDatabaseProps = {}) {
+export function DistributorIntelligenceSummaryTable() {
   const [query, setQuery] = useState('')
   const [sortCompany, setSortCompany] = useState<'asc' | 'desc'>('asc')
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
-    let rows = CUSTOMERS
+    let rows = DISTRIBUTORS
     if (q) {
       rows = rows.filter(
         (r) =>
           r.companyName.toLowerCase().includes(q) ||
           r.headquarters.toLowerCase().includes(q) ||
-          r.keyChemicals.toLowerCase().includes(q) ||
+          r.productPortfolio.toLowerCase().includes(q) ||
           r.contactName.toLowerCase().includes(q) ||
           r.email.toLowerCase().includes(q)
       )
     }
-    const sorted = [...rows].sort((a, b) => {
+    return [...rows].sort((a, b) => {
       const cmp = a.companyName.localeCompare(b.companyName)
       return sortCompany === 'asc' ? cmp : -cmp
     })
-    return sorted
   }, [query, sortCompany])
 
-  const total = CUSTOMERS.length
+  const total = DISTRIBUTORS.length
 
   return (
     <div className="w-full">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Customer Intelligence (10–12 Customers)</h2>
+          <h2 className="text-xl font-bold text-slate-900">Distributor Intelligence (10–12 Distributors)</h2>
           <p className="mt-1 text-sm text-gray-500">
-            Showing {filtered.length} of {total} customers
+            Showing {filtered.length} of {total} distributors
           </p>
         </div>
         <div className="relative w-full sm:w-72">
@@ -216,15 +210,15 @@ export default function CustomerIntelligenceDatabase(_props: CustomerIntelligenc
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search customers..."
+            placeholder="Search distributors..."
             className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-9 pr-3 text-sm text-black placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/25"
-            aria-label="Search customers"
+            aria-label="Search distributors"
           />
         </div>
       </div>
 
       <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
-        <table className="min-w-[1100px] w-full border-collapse text-sm text-black">
+        <table className="min-w-[1150px] w-full border-collapse text-sm text-black">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50/80">
               <th className="px-3 py-3 text-left text-xs font-bold uppercase tracking-wide text-gray-600">#</th>
@@ -242,7 +236,7 @@ export default function CustomerIntelligenceDatabase(_props: CustomerIntelligenc
                 Headquarters location
               </th>
               <th className="px-3 py-3 text-left text-xs font-bold uppercase tracking-wide text-gray-600">
-                Key chemicals procured
+                Core product portfolio (mining chemicals)
               </th>
               <th className="px-3 py-3 text-center text-xs font-bold uppercase tracking-wide text-gray-600">
                 Ownership type
@@ -279,7 +273,7 @@ export default function CustomerIntelligenceDatabase(_props: CustomerIntelligenc
                 <td className="px-3 py-3 text-gray-600">{i + 1}</td>
                 <td className="px-3 py-3 font-medium text-black">{row.companyName}</td>
                 <td className="px-3 py-3 text-gray-800">{row.headquarters}</td>
-                <td className="max-w-xs px-3 py-3 whitespace-normal text-gray-800">{row.keyChemicals}</td>
+                <td className="max-w-md px-3 py-3 whitespace-normal text-gray-800">{row.productPortfolio}</td>
                 <td className="px-3 py-3 text-center">
                   <span
                     className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${ownershipPillClass(row.ownership)}`}

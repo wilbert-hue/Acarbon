@@ -40,21 +40,21 @@ export function FilterPresets() {
   {
     id: 'top-markets',
     name: 'Top Markets',
-        description: 'Top 3 regions by 2023 market size',
+        description: 'Top 3 geographies by 2023 market size (total segment mix)',
     icon: <Globe className="h-4 w-4" />,
         filters: topMarketFilters
   },
       {
         id: 'growth-leaders',
         name: 'Growth Leaders',
-        description: 'Top 2 regions with highest CAGR',
+        description: 'Top 2 geographies by CAGR (total segment mix)',
         icon: <TrendingUp className="h-4 w-4" />,
         filters: growthLeadersFilters
       },
       {
         id: 'emerging-markets',
         name: 'Emerging Markets',
-        description: 'Top 5 countries with highest CAGR',
+        description: 'Top 5 geographies by CAGR (total segment mix)',
         icon: <Target className="h-4 w-4" />,
         filters: emergingMarketsFilters
       },
@@ -67,6 +67,8 @@ export function FilterPresets() {
       viewMode: 'matrix',
       yearRange: [2023, 2027],
       dataType: 'value',
+      segments: [],
+      aggregationLevel: null,
     }
   },
 ]

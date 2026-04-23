@@ -4,6 +4,12 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { useDashboardStore } from '@/lib/store'
 import { Check, ChevronDown, ChevronRight } from 'lucide-react'
 
+const GLOBAL_LABEL = 'Global'
+
+function withoutGlobal<T extends string>(list: T[]): T[] {
+  return list.filter(g => g !== GLOBAL_LABEL) as T[]
+}
+
 export function GeographyMultiSelect() {
   const { data, filters, updateFilters } = useDashboardStore()
   const [isOpen, setIsOpen] = useState(false)
@@ -35,11 +41,11 @@ export function GeographyMultiSelect() {
     }
 
     const geo = data.dimensions.geographies
-    const globalItems = geo.global || []
+    const globalItems = withoutGlobal(geo.global || [])
     const regions = geo.regions || []
     const countries = geo.countries || {}
     const hasHierarchy = regions.length > 0
-    const flatOptions = geo.all_geographies || []
+    const flatOptions = withoutGlobal(geo.all_geographies || [])
 
     return { globalItems, regions, countries, hasHierarchy, flatOptions }
   }, [data])
@@ -75,7 +81,7 @@ export function GeographyMultiSelect() {
   const handleSelectAll = () => {
     if (!data) return
     updateFilters({
-      geographies: data.dimensions.geographies.all_geographies
+      geographies: withoutGlobal(data.dimensions.geographies.all_geographies || []),
     })
   }
 
@@ -203,15 +209,12 @@ export function GeographyMultiSelect() {
                 searchResults.map(geo => renderCheckbox(geo, 0))
               )
             ) : hasHierarchy ? (
-              // Hierarchical mode
+              // Hierarchical mode (Global row omitted — regional/country only)
               <>
-                {/* Global items */}
                 {globalItems.map(geo => renderCheckbox(geo, 0))}
-                {/* Divider */}
                 {globalItems.length > 0 && regions.length > 0 && (
                   <div className="border-t border-gray-200 my-1" />
                 )}
-                {/* Regions with expandable countries */}
                 {regions.map(region => renderRegion(region))}
               </>
             ) : (

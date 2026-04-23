@@ -1,61 +1,102 @@
 'use client'
 
 import { useDashboardStore } from '@/lib/store'
-import { CHART_GROUPS, type ChartGroupId } from '@/lib/chart-groups'
-import { BarChart3, Target, type LucideIcon } from 'lucide-react'
+import { CHART_GROUPS } from '@/lib/chart-groups'
+import {
+  BarChart3,
+  Target,
+  Users,
+  Building2,
+  Globe2,
+  DollarSign,
+  type LucideIcon,
+} from 'lucide-react'
+import { INTELLIGENCE_PANEL_NAV, type IntelligencePanelId } from '@/lib/intelligence-panel'
 
-// Icon mapping for each chart group
-const iconMap: Record<ChartGroupId, LucideIcon> = {
-  'market-analysis': BarChart3,
-  'coherent-opportunity': Target,
+const DemandIcon = BarChart3
+const OpportunityIcon = Target
+
+const intelligenceIcons: Record<IntelligencePanelId, LucideIcon> = {
+  'customer-intelligence': Users,
+  'distributor-intelligence': Building2,
+  'import-analysis': Globe2,
+  'import-pricing': DollarSign,
 }
 
 export function ChartGroupSelector() {
-  const {
-    selectedChartGroup,
-    setSelectedChartGroup
-  } = useDashboardStore()
+  const { selectedChartGroup, setSelectedChartGroup, intelligencePanel, setIntelligencePanel } = useDashboardStore()
+
+  const opportunityGroup = CHART_GROUPS.find((g) => g.id === 'coherent-opportunity')!
+  const marketGroup = CHART_GROUPS.find((g) => g.id === 'market-analysis')!
+
+  const sidebarDescription =
+    intelligencePanel != null
+      ? INTELLIGENCE_PANEL_NAV.find((p) => p.id === intelligencePanel)?.description ?? ''
+      : selectedChartGroup === 'market-analysis'
+        ? marketGroup.description
+        : opportunityGroup.description
+
+  const pillClass = (active: boolean) =>
+    `w-full text-left px-2 py-1.5 rounded-md transition-all duration-200 flex items-center gap-2 ${
+      active
+        ? 'bg-gradient-to-r from-[#52B69A] to-[#34A0A4] text-white shadow-sm'
+        : 'hover:bg-gray-50 text-black'
+    }`
+
+  const iconClass = (active: boolean) =>
+    `w-3.5 h-3.5 flex-shrink-0 ${active ? 'text-white' : 'text-gray-600'}`
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
-      <h3 className="text-xs font-semibold text-black mb-2">Chart View</h3>
-      
+    <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
+      <h3 className="mb-2 text-xs font-semibold text-black">Chart View</h3>
+
       <div className="space-y-1">
-        {CHART_GROUPS.map((group) => {
-          const Icon = iconMap[group.id]
-          const isSelected = selectedChartGroup === group.id
-          
+        <button
+          type="button"
+          onClick={() => setSelectedChartGroup('market-analysis')}
+          className={pillClass(intelligencePanel === null && selectedChartGroup === 'market-analysis')}
+          title={marketGroup.description}
+        >
+          <DemandIcon className={iconClass(intelligencePanel === null && selectedChartGroup === 'market-analysis')} />
+          <span className="text-xs font-medium leading-tight">Demand Analysis</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setSelectedChartGroup('coherent-opportunity')}
+          className={pillClass(intelligencePanel === null && selectedChartGroup === 'coherent-opportunity')}
+          title={opportunityGroup.description}
+        >
+          <OpportunityIcon
+            className={iconClass(intelligencePanel === null && selectedChartGroup === 'coherent-opportunity')}
+          />
+          <span className="text-xs font-medium leading-tight">
+            Coherent Opportunity
+            <br />
+            Matrix
+          </span>
+        </button>
+
+        {INTELLIGENCE_PANEL_NAV.map((panel) => {
+          const Icon = intelligenceIcons[panel.id]
+          const active = intelligencePanel === panel.id
           return (
             <button
-              key={group.id}
-              onClick={() => setSelectedChartGroup(group.id)}
-              className={`
-                w-full text-left px-2 py-1.5 rounded transition-all duration-200
-                flex items-center space-x-2
-                ${isSelected 
-                  ? 'bg-gradient-to-r from-[#52B69A] to-[#34A0A4] text-white shadow-sm' 
-                  : 'hover:bg-gray-50 text-black hover:text-black'
-                }
-              `}
-              title={group.description}
+              key={panel.id}
+              type="button"
+              onClick={() => setIntelligencePanel(panel.id)}
+              className={pillClass(active)}
+              title={panel.description}
             >
-              <Icon 
-                className={`w-3 h-3 flex-shrink-0 ${isSelected ? 'text-white' : 'text-black'}`} 
-              />
-              <span className="text-xs font-medium leading-tight">
-                {group.label === 'Coherent Opportunity Matrix' 
-                  ? <span>Coherent Opportunity<br/>Matrix</span>
-                  : group.label}
-              </span>
+              <Icon className={iconClass(active)} />
+              <span className="text-xs font-medium leading-tight">{panel.label}</span>
             </button>
           )
         })}
       </div>
 
-      <div className="mt-2 pt-2 border-t border-gray-100">
-        <p className="text-[10px] text-black leading-tight">
-          {CHART_GROUPS.find(g => g.id === selectedChartGroup)?.description || 'Select a view to see related charts'}
-        </p>
+      <div className="mt-2 border-t border-gray-100 pt-2">
+        <p className="text-[10px] leading-snug text-gray-600">{sidebarDescription}</p>
       </div>
     </div>
   )
