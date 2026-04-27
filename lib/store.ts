@@ -262,10 +262,6 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
   },
   
   updateFilters: (newFilters) => {
-    // Dashboard is value-only (volume UI removed)
-    if ((newFilters as Partial<FilterState>).dataType === 'volume') {
-      newFilters = { ...newFilters, dataType: 'value' }
-    }
     console.log('🔧 Store: updateFilters called with:', newFilters)
     set((state) => {
       // If segmentType is changing, save current geographies and restore for new type

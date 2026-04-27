@@ -260,6 +260,46 @@ export function EnhancedFilterPanel() {
         </select>
       </div>
 
+      {/* Value vs volume (market size vs physical volume) */}
+      <div className="border-t pt-2.5">
+        <label className="mb-2 block text-xs font-medium uppercase text-black">Data Type</label>
+        <div className="flex rounded-lg border border-gray-200 bg-gray-50 p-0.5">
+          <button
+            type="button"
+            onClick={() => updateFilters({ dataType: 'value' })}
+            className={`flex-1 rounded-md px-2 py-2 text-xs font-medium transition-colors ${
+              filters.dataType === 'value'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'text-gray-700 hover:bg-white'
+            }`}
+          >
+            Value
+          </button>
+          <button
+            type="button"
+            onClick={() => updateFilters({ dataType: 'volume' })}
+            disabled={!data.metadata.has_volume}
+            title={
+              data.metadata.has_volume
+                ? 'Show market volume'
+                : 'No volume dataset in this project'
+            }
+            className={`flex-1 rounded-md px-2 py-2 text-xs font-medium transition-colors ${
+              filters.dataType === 'volume'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'text-gray-700 hover:bg-white'
+            } disabled:cursor-not-allowed disabled:opacity-50`}
+          >
+            Volume
+          </button>
+        </div>
+        <p className="mt-1 text-[10px] text-gray-600">
+          {filters.dataType === 'value'
+            ? `Market value (${data.metadata.currency || 'USD'} ${data.metadata.value_unit || 'Million'})`
+            : `Market volume (${data.metadata.volume_unit || 'Tons'})`}
+        </p>
+      </div>
+
       {/* Geography Selection */}
       <div className="border-t pt-2.5">
         <label className="text-xs font-medium text-black uppercase mb-2 block">
@@ -502,7 +542,12 @@ export function EnhancedFilterPanel() {
             <div>📍 {filters.geographies.length} geographies</div>
             <div>📊 {selectedSegments.length} segments from {new Set(selectedSegments.map(s => s.type)).size} types</div>
             <div>📅 Years: {filters.yearRange[0]} - {filters.yearRange[1]}</div>
-            <div>📈 Data: Value (US$ Million)</div>
+            <div>
+              📈 Data:{' '}
+              {filters.dataType === 'value'
+                ? `Value (${data.metadata.currency || 'USD'} ${data.metadata.value_unit || 'Million'})`
+                : `Volume (${data.metadata.volume_unit || 'Tons'})`}
+            </div>
             <div>🔢 Level: Auto (based on selected segments)</div>
           </div>
         </div>
