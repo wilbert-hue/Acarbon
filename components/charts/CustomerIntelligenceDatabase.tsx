@@ -311,7 +311,72 @@ function linkedInHref(url: string) {
   return `https://${url}`
 }
 
-interface CustomerIntelligenceDatabaseProps {
+/** Matches Excel-style category strip colors (light tints) */
+function groupTopHeaderClass(group: string): string {
+  const g = group.trim()
+  switch (g) {
+    case 'S.No.':
+      return 'bg-gray-200 text-gray-900'
+    case 'Customer Information':
+      return 'bg-orange-100 text-gray-900'
+    case 'Contact Details':
+      return 'bg-sky-100 text-gray-900'
+    case 'Professional Drivers':
+      return 'bg-teal-100 text-gray-900'
+    case 'Purchasing Behaviour Metrics':
+      return 'bg-purple-100 text-gray-900'
+    case 'Solution Requirements':
+      return 'bg-amber-100 text-gray-900'
+    case 'CMI Insights':
+      return 'bg-indigo-100 text-gray-900'
+    default:
+      return 'bg-gray-200 text-gray-900'
+  }
+}
+
+function groupSubHeaderClass(group: string): string {
+  const g = group.trim()
+  switch (g) {
+    case 'S.No.':
+      return 'bg-gray-50 text-gray-900'
+    case 'Customer Information':
+      return 'bg-orange-50 text-gray-900'
+    case 'Contact Details':
+      return 'bg-sky-50 text-gray-900'
+    case 'Professional Drivers':
+      return 'bg-teal-50 text-gray-900'
+    case 'Purchasing Behaviour Metrics':
+      return 'bg-purple-50 text-gray-900'
+    case 'Solution Requirements':
+      return 'bg-amber-50 text-gray-900'
+    case 'CMI Insights':
+      return 'bg-indigo-50 text-gray-900'
+    default:
+      return 'bg-gray-50 text-gray-900'
+  }
+}
+
+function buildMergedGroupRow(columns: CustomerColumn[]): { label: string; colspan: number }[] {
+  if (!columns.some(c => c.group != null && String(c.group).trim() !== '')) {
+    return []
+  }
+  const groups = columns.map(c => c.group || '—')
+  if (groups.length === 0) return []
+  const merged: { label: string; colspan: number }[] = []
+  let i = 0
+  while (i < groups.length) {
+    const label = groups[i]
+    let span = 1
+    while (i + span < groups.length && groups[i + span] === label) {
+      span++
+    }
+    merged.push({ label, colspan: span })
+    i += span
+  }
+  return merged
+}
+
+interface Props {
   title?: string
   height?: number
 }

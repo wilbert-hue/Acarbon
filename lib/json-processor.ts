@@ -1141,27 +1141,42 @@ async function processSegmentTypeAsync(
         timeSeries[year] = data[yearStr] !== null && data[yearStr] !== undefined ? (data[yearStr] as number) : 0
       })
       
-      // Parse CAGR - it might be a string like "5.2%" or a number
-      // If not provided in data, calculate from time series
+      // Parse CAGR - string "5.2%", number as percent, or Excel ratio 0.052 = 5.2%
+      // Fallback growth from time series uses 2026→2033 when those years exist (same as comparison table)
+      const cagrWindowLo = 2026
+      const cagrWindowHi = 2033
+      const cagrStartYear =
+        allYears.includes(cagrWindowLo) && allYears.includes(cagrWindowHi)
+          ? cagrWindowLo
+          : allYears[0]
+      const cagrEndYear =
+        allYears.includes(cagrWindowLo) && allYears.includes(cagrWindowHi)
+          ? cagrWindowHi
+          : allYears[allYears.length - 1]
+      const startVal = timeSeries[cagrStartYear] || 0
+      const endVal = timeSeries[cagrEndYear] || 0
+      const numYears = cagrEndYear - cagrStartYear
+      let fromSpan = 0
+      if (startVal > 0 && endVal > 0 && numYears > 0) {
+        fromSpan = (Math.pow(endVal / startVal, 1 / numYears) - 1) * 100
+      }
+
       let cagr = 0
       if (data.CAGR !== null && data.CAGR !== undefined) {
         if (typeof data.CAGR === 'string') {
-          // Extract number from string like "5.2%" or "5.2"
           const cagrStr = data.CAGR.replace('%', '').trim()
           cagr = parseFloat(cagrStr) || 0
         } else if (typeof data.CAGR === 'number') {
           cagr = data.CAGR
         }
-      } else {
-        // Calculate CAGR from base year (2023) to forecast year
-        const cagrStartYear = allYears[0] + 4 // Base year = 2023 for 2019-2031 data
-        const cagrEndYear = allYears[allYears.length - 1]
-        const startVal = timeSeries[cagrStartYear] || 0
-        const endVal = timeSeries[cagrEndYear] || 0
-        const numYears = cagrEndYear - cagrStartYear
-        if (startVal > 0 && endVal > 0 && numYears > 0) {
-          cagr = (Math.pow(endVal / startVal, 1 / numYears) - 1) * 100
+        if (typeof cagr === 'number' && cagr !== 0 && Math.abs(cagr) < 1) {
+          cagr = cagr * 100
         }
+        if (Math.abs(cagr) < 1e-6 && Math.abs(fromSpan) > 0.01) {
+          cagr = fromSpan
+        }
+      } else {
+        cagr = fromSpan
       }
       
       records.push({
@@ -1347,11 +1362,8 @@ export async function processJsonDataAsync(
     }
     console.log(`Found ${segmentTypes.size} segment types:`, Array.from(segmentTypes))
 
-    // Remove "By Region" (and similar) from segment types - these are geography dimensions, not segments
-    segmentTypes.delete('By Region')
-    segmentTypes.delete('By State')
-    segmentTypes.delete('By Country')
-    console.log(`Segment types after removing geography types:`, Array.from(segmentTypes))
+    // Keep By Region / By Country as normal segment types (dataset uses them under Global and regions)
+    console.log(`Segment types (all):`, Array.from(segmentTypes))
 
     // Filter out geographies that only exist in segmentation structure but have no actual data
     // in value/volume files (e.g., "Global" when only region/country-level data exists)
@@ -1441,10 +1453,14 @@ export async function processJsonDataAsync(
       await new Promise(resolve => setImmediate(resolve))
     }
 
-    // Process "By Region" data separately for geography-based records
-    // These records are NOT added to segment types but provide data for region/country geographies
+    // Optional second pass for geo segment types that exist in structure but were NOT in segmentTypes.
+    // If "By Region" / "By State" / "By Country" are already in segmentTypes, the main loop above
+    // already emitted those records — do not append again or every value is double-counted in charts.
     const geoSegmentTypes = ['By Region', 'By State', 'By Country']
     for (const geoSegType of geoSegmentTypes) {
+      if (segmentTypes.has(geoSegType)) {
+        continue
+      }
       // Check if this geo segment type exists in the structure data
       const hasGeoSegType = Object.values(structureData).some(
         (geo: any) => geo && typeof geo === 'object' && geo[geoSegType]
@@ -1480,8 +1496,11 @@ export async function processJsonDataAsync(
         )
         volumeRecords.push(...volumeRecs)
       }
-      // Also process "By Region" geography records for volume
+      // Also process "By Region" geography records for volume (only if not already in main loop)
       for (const geoSegType of geoSegmentTypes) {
+        if (segmentTypes.has(geoSegType)) {
+          continue
+        }
         const hasGeoSegType = Object.values(structureData).some(
           (geo: any) => geo && typeof geo === 'object' && geo[geoSegType]
         )
@@ -1501,19 +1520,32 @@ export async function processJsonDataAsync(
       }
     }
     
-    // Calculate market share for each record
-    const calculateMarketShare = (records: DataRecord[], year: number) => {
-      const yearTotal = records.reduce((sum, r) => sum + (r.time_series[year] || 0), 0)
-      records.forEach(record => {
-        const value = record.time_series[year] || 0
-        record.market_share = yearTotal > 0 ? (value / yearTotal) * 100 : 0
-      })
+    // Market share: within each segment_type, % of mean annual value in 2026–2033 (not global all-types total)
+    const shareYears = allYears.filter(y => y >= 2026 && y <= 2033)
+    const periodAverage = (ts: Record<number, number>) => {
+      if (shareYears.length === 0) return 0
+      const s = shareYears.reduce((acc, y) => acc + (ts[y] || 0), 0)
+      return s / shareYears.length
     }
-    
-    // Calculate market share for base year
-    calculateMarketShare(valueRecords, baseYear)
+    const calculateMarketShare = (records: DataRecord[]) => {
+      const byType = new Map<string, DataRecord[]>()
+      for (const r of records) {
+        const k = r.segment_type || '__default__'
+        if (!byType.has(k)) byType.set(k, [])
+        byType.get(k)!.push(r)
+      }
+      for (const group of byType.values()) {
+        const avgs = group.map(r => periodAverage(r.time_series))
+        const yearTotal = avgs.reduce((a, b) => a + b, 0)
+        group.forEach((record, i) => {
+          const v = avgs[i]
+          record.market_share = yearTotal > 0 ? (v / yearTotal) * 100 : 0
+        })
+      }
+    }
+    calculateMarketShare(valueRecords)
     if (volumeRecords.length > 0) {
-      calculateMarketShare(volumeRecords, baseYear)
+      calculateMarketShare(volumeRecords)
     }
     
     // Build metadata

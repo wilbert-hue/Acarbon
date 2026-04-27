@@ -12,6 +12,14 @@ import type { ComparisonData, DataRecord, FilterState } from './types'
  * @param topN - Number of top regions to return (default 3)
  * @returns Array of top region names
  */
+/**
+ * Top-level region names — presets should only pick these so they never
+ * accidentally mix a parent region with its own child country in the same set.
+ */
+const TOP_LEVEL_REGIONS = new Set([
+  'North America', 'Europe', 'Asia Pacific', 'Latin America', 'Middle East & Africa'
+])
+
 export function getTopRegionsByMarketValue(
   data: ComparisonData | null,
   year: number = 2023,
@@ -19,32 +27,23 @@ export function getTopRegionsByMarketValue(
 ): string[] {
   if (!data) return []
 
-  // Get all value data records
   const records = data.data.value.geography_segment_matrix
-
-  // Calculate total market value by geography for the specified year
-  // Treat all geographies as single entities - aggregate by name
   const geographyTotals = new Map<string, number>()
 
   records.forEach((record: DataRecord) => {
     const geography = record.geography
-    const value = record.time_series[year] || 0
-
-    // Skip global level
     if (geography === 'Global') return
+    // Only accumulate top-level regions so presets never surface U.S. alongside North America
+    if (!TOP_LEVEL_REGIONS.has(geography)) return
 
-    // Treat all geographies as single entities - aggregate by name
-    const currentTotal = geographyTotals.get(geography) || 0
-    geographyTotals.set(geography, currentTotal + value)
+    const value = record.time_series[year] || 0
+    geographyTotals.set(geography, (geographyTotals.get(geography) || 0) + value)
   })
 
-  // Sort geographies by total value and get top N
-  const sortedGeographies = Array.from(geographyTotals.entries())
-    .sort((a, b) => b[1] - a[1]) // Sort by value descending
+  return Array.from(geographyTotals.entries())
+    .sort((a, b) => b[1] - a[1])
     .slice(0, topN)
     .map(([geography]) => geography)
-
-  return sortedGeographies
 }
 
 /**
@@ -106,6 +105,9 @@ export function getFirstSegmentType(data: ComparisonData | null): string | null 
     if (available.has(t)) return t
   }
   const segmentTypes = Object.keys(data.dimensions.segments)
+  for (const preferred of SEGMENT_TYPE_ORDER) {
+    if (segmentTypes.includes(preferred)) return preferred
+  }
   return segmentTypes.length > 0 ? segmentTypes[0] : null
 }
 
@@ -121,20 +123,15 @@ export function getTopRegionsByCAGR(
 ): string[] {
   if (!data) return []
 
-  // Get all value data records
   const records = data.data.value.geography_segment_matrix
-
-  // Calculate average CAGR for each geography
-  // Treat all geographies as single entities - aggregate by name
   const geographyCAGRs = new Map<string, number[]>()
 
   records.forEach((record: DataRecord) => {
     const geography = record.geography
-
-    // Skip global level
     if (geography === 'Global') return
+    // Only top-level regions for "Growth Leaders"
+    if (!TOP_LEVEL_REGIONS.has(geography)) return
 
-    // Treat all geographies as single entities - aggregate by name
     if (record.cagr !== undefined && record.cagr !== null) {
       const cagrs = geographyCAGRs.get(geography) || []
       cagrs.push(record.cagr)
@@ -142,19 +139,14 @@ export function getTopRegionsByCAGR(
     }
   })
 
-  // Calculate average CAGR for each geography
-  const avgCAGRs = Array.from(geographyCAGRs.entries()).map(([geography, cagrs]) => ({
-    geography,
-    avgCAGR: cagrs.reduce((a, b) => a + b, 0) / cagrs.length
-  }))
-
-  // Sort geographies by average CAGR and get top N
-  const sortedGeographies = avgCAGRs
-    .sort((a, b) => b.avgCAGR - a.avgCAGR) // Sort by CAGR descending
+  return Array.from(geographyCAGRs.entries())
+    .map(([geography, cagrs]) => ({
+      geography,
+      avgCAGR: cagrs.reduce((a, b) => a + b, 0) / cagrs.length
+    }))
+    .sort((a, b) => b.avgCAGR - a.avgCAGR)
     .slice(0, topN)
     .map(item => item.geography)
-
-  return sortedGeographies
 }
 
 /**
@@ -169,20 +161,15 @@ export function getTopCountriesByCAGR(
 ): string[] {
   if (!data) return []
 
-  // Get all value data records
   const records = data.data.value.geography_segment_matrix
-
-  // Calculate average CAGR for each geography
-  // Treat all geographies as single entities - aggregate by name
   const geographyCAGRs = new Map<string, number[]>()
 
   records.forEach((record: DataRecord) => {
     const geography = record.geography
-
-    // Skip global level
     if (geography === 'Global') return
+    // Emerging markets = countries/sub-regions only (not top-level regions)
+    if (TOP_LEVEL_REGIONS.has(geography)) return
 
-    // Treat all geographies as single entities - aggregate by name
     if (record.cagr !== undefined && record.cagr !== null) {
       const cagrs = geographyCAGRs.get(geography) || []
       cagrs.push(record.cagr)
@@ -190,19 +177,14 @@ export function getTopCountriesByCAGR(
     }
   })
 
-  // Calculate average CAGR for each geography
-  const avgCAGRs = Array.from(geographyCAGRs.entries()).map(([geography, cagrs]) => ({
-    geography,
-    avgCAGR: cagrs.reduce((a, b) => a + b, 0) / cagrs.length
-  }))
-
-  // Sort geographies by average CAGR and get top N
-  const sortedGeographies = avgCAGRs
-    .sort((a, b) => b.avgCAGR - a.avgCAGR) // Sort by CAGR descending
+  return Array.from(geographyCAGRs.entries())
+    .map(([geography, cagrs]) => ({
+      geography,
+      avgCAGR: cagrs.reduce((a, b) => a + b, 0) / cagrs.length
+    }))
+    .sort((a, b) => b.avgCAGR - a.avgCAGR)
     .slice(0, topN)
     .map(item => item.geography)
-
-  return sortedGeographies
 }
 
 /**
