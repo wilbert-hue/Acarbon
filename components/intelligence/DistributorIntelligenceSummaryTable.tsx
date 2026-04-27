@@ -362,7 +362,7 @@ export function DistributorIntelligenceSummaryTable() {
     <div className="w-full">
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Distributor Intelligence ({total} distributors)</h2>
+          <h2 className="text-xl font-bold text-slate-900">Distributor Intelligence (80-100 distributors)</h2>
           <p className="mt-1 text-sm text-gray-500">
             Showing {filtered.length} of {total} distributors
           </p>

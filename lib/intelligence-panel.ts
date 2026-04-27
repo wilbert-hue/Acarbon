@@ -18,12 +18,12 @@ export const INTELLIGENCE_PANEL_NAV: {
 }[] = [
   {
     id: 'customer-intelligence',
-    label: 'Customer Intelligence',
+    label: 'Customer Intelligence (130-150 customers)',
     description: 'Key customer profiles and procurement details',
   },
   {
     id: 'distributor-intelligence',
-    label: 'Distributor Intelligence',
+    label: 'Distributor Intelligence (80-100 distributors)',
     description: 'Key distributor profiles and product portfolios',
   },
   {
