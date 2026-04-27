@@ -105,7 +105,8 @@ function getDefaultFilters(data: ComparisonData | null): FilterState {
     geographies: firstGeography ? [firstGeography] : [],
     segments: firstSegments,
     segmentType: firstSegmentType,
-    yearRange: [baseYear, Math.min(baseYear + 4, forecastYear)],
+    // Full forecast through end year so period labels stay 2026–2033 (not truncated e.g. 2026–2030)
+    yearRange: [baseYear, forecastYear],
     dataType: 'value',
     viewMode: 'segment-mode',
     businessType: defaultBusinessType,

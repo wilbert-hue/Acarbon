@@ -1,7 +1,9 @@
 /**
  * Build public/data/value.json, segmentation_analysis.json, volume.json
- * from Dataset-Global Spectral Sensor Market.xlsx (Master Sheet).
- * CAGR is taken from the "Value" sheet (Excel) per segment path — not recalculated.
+ * from the workbook Master Sheet. CAGR on each leaf comes from the "Value" sheet
+ * (column CAGR / index 14), keyed by region + segment path — not recalculated when matched.
+ *
+ * Default input: Copy of Dataset-Global Spectral Sensor Market.xlsx (set DATASET_XLSX to override).
  *
  * Run: node scripts/build-value-from-dataset.js
  */
@@ -11,7 +13,12 @@ const path = require('path');
 const XLSX = require('xlsx');
 
 const ROOT = path.join(__dirname, '..');
-const XLSX_PATH = path.join(ROOT, 'Dataset-Global Spectral Sensor Market.xlsx');
+const DEFAULT_DATASET = 'Copy of Dataset-Global Spectral Sensor Market.xlsx';
+const XLSX_PATH = process.env.DATASET_XLSX
+  ? path.isAbsolute(process.env.DATASET_XLSX)
+    ? process.env.DATASET_XLSX
+    : path.join(ROOT, process.env.DATASET_XLSX)
+  : path.join(ROOT, DEFAULT_DATASET);
 const OUT_DIR = path.join(ROOT, 'public', 'data');
 
 const years = [2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033];
@@ -110,21 +117,31 @@ function buildCagrMapForRegionBlock(vRows, startR, endR, region) {
     const isData = typeof row[1] === 'number' && !isNaN(row[1]);
     const cagrDec = row[CAGRCOL];
 
+    if (TOP_REGIONS.has(label) && !isData) {
+      continue;
+    }
+
+    // Pivot subtotals: "By …" / Hardware rows often have numeric column B — still set hierarchy
+    if (/^By /.test(label)) {
+      stack = [label];
+      inSensorsDetectorChildren = false;
+      if (isData) {
+        const pathParts = dedupePathParts([...stack]);
+        map.set(`${region}::${pathParts.join('||')}`, cagrDecToString(cagrDec));
+      }
+      continue;
+    }
+    if (OFFERING_TIERS.has(label) && stack[0] === 'By Offering') {
+      stack = ['By Offering', label];
+      inSensorsDetectorChildren = false;
+      if (isData) {
+        const pathParts = dedupePathParts([...stack]);
+        map.set(`${region}::${pathParts.join('||')}`, cagrDecToString(cagrDec));
+      }
+      continue;
+    }
+
     if (!isData) {
-      if (TOP_REGIONS.has(label)) {
-        // New region in same file — only when scanning a slice; usually skip
-        continue;
-      }
-      if (/^By /.test(label)) {
-        stack = [label];
-        inSensorsDetectorChildren = false;
-        continue;
-      }
-      if (OFFERING_TIERS.has(label) && stack[0] === 'By Offering') {
-        stack = ['By Offering', label];
-        inSensorsDetectorChildren = false;
-        continue;
-      }
       continue;
     }
 
@@ -250,6 +267,7 @@ function main() {
     process.exit(1);
   }
 
+  console.log('Reading:', path.basename(XLSX_PATH));
   const wb = XLSX.readFile(XLSX_PATH);
   const cagrByPath = buildCagrMapFromValueSheet(wb);
 
@@ -281,6 +299,7 @@ function main() {
     const yearObj = buildYearObject(row);
     const k = `${region}::${path.join('||')}`;
     if (cagrByPath.has(k)) {
+      // Always use CAGR from the Value sheet when the path matches
       yearObj.CAGR = cagrByPath.get(k);
       cagrFromExcel++;
     } else {

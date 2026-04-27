@@ -5,6 +5,11 @@ import { useDashboardStore } from '@/lib/store'
 import { filterData } from '@/lib/data-processor'
 import { ArrowUp, ArrowDown, Download } from 'lucide-react'
 
+/** Comparison table: single-year value at 2026; CAGR, growth, share, trend = 2026–2033 */
+const COMPARISON_VALUE_YEAR = 2026
+const COMPARISON_PERIOD_START = 2026
+const COMPARISON_PERIOD_END = 2033
+
 interface ComparisonTableProps {
   title?: string
   height?: number
@@ -26,39 +31,51 @@ export function ComparisonTable({ title, height = 600 }: ComparisonTableProps) {
     // Filter data
     const filtered = filterData(dataset, filters)
 
-    // Get the selected year (use base year or middle of range)
-    const year = filters.yearRange[0] + Math.floor((filters.yearRange[1] - filters.yearRange[0]) / 2)
-    const startYear = filters.yearRange[0]
-    const endYear = filters.yearRange[1]
-
-    // Helper function to parse CAGR (handles string, number, or null)
-    const parseCAGR = (cagr: any): number => {
-      if (cagr === null || cagr === undefined) return 0
-      if (typeof cagr === 'number') return cagr
-      if (typeof cagr === 'string') {
-        // Extract number from string like "5.2%" or "5.2"
-        const cagrStr = cagr.replace('%', '').trim()
-        return parseFloat(cagrStr) || 0
-      }
-      return 0
+    // CAGR: (V2033/V2026)^(1/7) − 1
+    const cagr2026to2033 = (ts: Record<number, number>) => {
+      const a = ts[COMPARISON_PERIOD_START] ?? 0
+      const b = ts[COMPARISON_PERIOD_END] ?? 0
+      const n = COMPARISON_PERIOD_END - COMPARISON_PERIOD_START
+      if (a <= 0 || b <= 0 || n <= 0) return 0
+      return (Math.pow(b / a, 1 / n) - 1) * 100
     }
 
-    // Transform to table format
-    return filtered.map(record => ({
+    // Share %: mean value 2026–2033 per row vs visible rows (not filter year slider)
+    const yearIndices: number[] = []
+    for (let y = COMPARISON_PERIOD_START; y <= COMPARISON_PERIOD_END; y++) {
+      yearIndices.push(y)
+    }
+    const periodAvg = (ts: Record<number, number>) => {
+      if (yearIndices.length === 0) return 0
+      return yearIndices.reduce((s, y) => s + (ts[y] || 0), 0) / yearIndices.length
+    }
+    const avgs = filtered.map(r => periodAvg(r.time_series))
+    const shareDenom = avgs.reduce((a, b) => a + b, 0)
+
+    // Growth %: total change 2026 → 2033 (aligned with CAGR window)
+    const growth2026to2033 = (ts: Record<number, number>) => {
+      const a = ts[COMPARISON_PERIOD_START] ?? 0
+      const b = ts[COMPARISON_PERIOD_END] ?? 0
+      if (a <= 0) return 0
+      return ((b - a) / a) * 100
+    }
+
+    return filtered.map((record, i) => ({
       geography: record.geography,
       segment: record.segment,
       segmentType: record.segment_type,
-      currentValue: record.time_series[year] || 0,
-      startValue: record.time_series[startYear] || 0,
-      endValue: record.time_series[endYear] || 0,
-      growth: record.time_series[startYear] > 0 
-        ? (((record.time_series[endYear] || 0) - (record.time_series[startYear] || 0)) / record.time_series[startYear] * 100)
-        : 0,
-      cagr: parseCAGR(record.cagr),
-      marketShare: record.market_share || 0,
+      currentValue: record.time_series[COMPARISON_VALUE_YEAR] || 0,
+      startValue: record.time_series[COMPARISON_PERIOD_START] || 0,
+      endValue: record.time_series[COMPARISON_PERIOD_END] || 0,
+      growth: growth2026to2033(record.time_series),
+      cagr: cagr2026to2033(record.time_series),
+      marketShare: shareDenom > 0 ? (avgs[i]! / shareDenom) * 100 : 0,
       sparkline: Object.entries(record.time_series)
-        .filter(([y]) => parseInt(y) >= startYear && parseInt(y) <= endYear)
-        .sort(([a], [b]) => parseInt(a) - parseInt(b))
+        .filter(([y]) => {
+          const yi = parseInt(y, 10)
+          return yi >= COMPARISON_PERIOD_START && yi <= COMPARISON_PERIOD_END
+        })
+        .sort(([a], [b]) => parseInt(a, 10) - parseInt(b, 10))
         .map(([, value]) => value)
     }))
   }, [data, filters])
@@ -93,7 +110,7 @@ export function ComparisonTable({ title, height = 600 }: ComparisonTableProps) {
   }
 
   const exportToCSV = () => {
-    const headers = ['Geography', 'Segment', 'Type', 'Current Value', 'Growth %', 'CAGR %', 'Market Share %']
+    const headers = ['Geography', 'Segment', 'Type', `Value (${COMPARISON_VALUE_YEAR})`, 'Growth % (2026–2033)', 'CAGR % (2026–2033)', 'Share % (mean 2026–2033)']
     const rows = sortedData.map(row => [
       row.geography,
       row.segment,
@@ -148,7 +165,6 @@ export function ComparisonTable({ title, height = 600 }: ComparisonTableProps) {
     )
   }
 
-  const year = filters.yearRange[0] + Math.floor((filters.yearRange[1] - filters.yearRange[0]) / 2)
   const valueUnit = filters.dataType === 'value' 
     ? `${data.metadata.currency} ${data.metadata.value_unit}`
     : data.metadata.volume_unit
@@ -161,7 +177,7 @@ export function ComparisonTable({ title, height = 600 }: ComparisonTableProps) {
             {title || 'Data Comparison Table'}
           </h3>
           <p className="text-sm text-black mt-1">
-            Year: {year} | Values in {valueUnit}
+            Value: {COMPARISON_VALUE_YEAR} | {valueUnit} | Growth &amp; CAGR: {COMPARISON_PERIOD_START}–{COMPARISON_PERIOD_END} | Trend bars: {COMPARISON_PERIOD_START}–{COMPARISON_PERIOD_END}
           </p>
         </div>
         <button
@@ -207,7 +223,7 @@ export function ComparisonTable({ title, height = 600 }: ComparisonTableProps) {
                 onClick={() => handleSort('currentValue')}
               >
                 <div className="flex items-center justify-end gap-1">
-                  Value
+                  Value ({COMPARISON_VALUE_YEAR})
                   {sortField === 'currentValue' && (
                     sortDirection === 'asc' ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />
                   )}
@@ -221,7 +237,7 @@ export function ComparisonTable({ title, height = 600 }: ComparisonTableProps) {
                 onClick={() => handleSort('growth')}
               >
                 <div className="flex items-center justify-end gap-1">
-                  Growth %
+                  Growth % ({COMPARISON_PERIOD_START}–{COMPARISON_PERIOD_END})
                   {sortField === 'growth' && (
                     sortDirection === 'asc' ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />
                   )}
@@ -232,7 +248,7 @@ export function ComparisonTable({ title, height = 600 }: ComparisonTableProps) {
                 onClick={() => handleSort('cagr')}
               >
                 <div className="flex items-center justify-end gap-1">
-                  CAGR %
+                  CAGR % ({COMPARISON_PERIOD_START}–{COMPARISON_PERIOD_END})
                   {sortField === 'cagr' && (
                     sortDirection === 'asc' ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />
                   )}
@@ -243,7 +259,7 @@ export function ComparisonTable({ title, height = 600 }: ComparisonTableProps) {
                 onClick={() => handleSort('marketShare')}
               >
                 <div className="flex items-center justify-end gap-1">
-                  Share %
+                  Share % (mean {COMPARISON_PERIOD_START}–{COMPARISON_PERIOD_END})
                   {sortField === 'marketShare' && (
                     sortDirection === 'asc' ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />
                   )}
@@ -287,7 +303,7 @@ export function ComparisonTable({ title, height = 600 }: ComparisonTableProps) {
       </div>
 
       <div className="mt-4 text-center text-sm text-black">
-        Showing {sortedData.length} records | {filters.yearRange[0]} - {filters.yearRange[1]}
+        Showing {sortedData.length} records | Analysis period {COMPARISON_PERIOD_START}–{COMPARISON_PERIOD_END} (value column = {COMPARISON_VALUE_YEAR})
       </div>
     </div>
   )
