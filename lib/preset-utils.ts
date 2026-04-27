@@ -105,10 +105,7 @@ export function getFirstSegmentType(data: ComparisonData | null): string | null 
     if (available.has(t)) return t
   }
   const segmentTypes = Object.keys(data.dimensions.segments)
-  for (const preferred of SEGMENT_TYPE_ORDER) {
-    if (segmentTypes.includes(preferred)) return preferred
-  }
-  return segmentTypes.length > 0 ? segmentTypes[0] : null
+  return segmentTypes.length > 0 ? segmentTypes[0]! : null
 }
 
 /**
