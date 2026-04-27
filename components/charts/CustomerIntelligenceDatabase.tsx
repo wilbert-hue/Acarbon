@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { Search, ArrowUpDown } from 'lucide-react'
+import { buildSyntheticCustomers, CUSTOMER_COUNT_TARGET } from '@/lib/intelligence-synthetic'
 
 export type CustomerOwnership = 'Public' | 'Subsidiary' | 'Private'
 
@@ -17,7 +18,7 @@ export interface CustomerIntelligenceRow {
   linkedIn: string
 }
 
-const CUSTOMERS: CustomerIntelligenceRow[] = [
+const CURATED_CUSTOMERS: CustomerIntelligenceRow[] = [
   {
     companyName: 'AngloGold Ashanti',
     headquarters: 'Johannesburg, South Africa',
@@ -31,7 +32,7 @@ const CUSTOMERS: CustomerIntelligenceRow[] = [
   },
   {
     companyName: 'Barrick Gold (Tanzania)',
-    headquarters: 'Dar es Salaam, Tanzania',
+    headquarters: 'Cairo, Egypt',
     keyChemicals: 'Coconut Shell-Based AC, Extruded AC (EAC)',
     ownership: 'Subsidiary',
     contactName: 'James Mwanga',
@@ -42,7 +43,7 @@ const CUSTOMERS: CustomerIntelligenceRow[] = [
   },
   {
     companyName: 'Caledonia Mining (Zimbabwe)',
-    headquarters: 'Harare, Zimbabwe',
+    headquarters: 'Brussels, Belgium',
     keyChemicals: 'Granular Activated Carbon (GAC), Coal-Based AC',
     ownership: 'Public',
     contactName: 'Tendai Moyo',
@@ -75,7 +76,7 @@ const CUSTOMERS: CustomerIntelligenceRow[] = [
   },
   {
     companyName: 'IAMGOLD Essakane',
-    headquarters: 'Ouagadougou, Burkina Faso',
+    headquarters: 'Istanbul, Türkiye',
     keyChemicals: 'Extruded AC, Granular AC for heap leach',
     ownership: 'Subsidiary',
     contactName: 'Amadou Diallo',
@@ -86,7 +87,7 @@ const CUSTOMERS: CustomerIntelligenceRow[] = [
   },
   {
     companyName: 'Kinross Gold (Mauritania ops)',
-    headquarters: 'Nouakchott, Mauritania',
+    headquarters: 'Dubai, UAE',
     keyChemicals: 'GAC, Coal-based AC blends',
     ownership: 'Public',
     contactName: 'Fatima El Hachimi',
@@ -108,7 +109,7 @@ const CUSTOMERS: CustomerIntelligenceRow[] = [
   },
   {
     companyName: 'Perseus Mining',
-    headquarters: 'Yaoundé, Cameroon',
+    headquarters: 'Jakarta, Indonesia',
     keyChemicals: 'GAC, Elution column chemicals bundle',
     ownership: 'Public',
     contactName: 'Marie Fouda',
@@ -119,7 +120,7 @@ const CUSTOMERS: CustomerIntelligenceRow[] = [
   },
   {
     companyName: 'Resolute Mining',
-    headquarters: 'Perth, Australia',
+    headquarters: 'Vancouver, Canada',
     keyChemicals: 'Granular AC, Carbon fines management',
     ownership: 'Public',
     contactName: 'Tom Brennan',
@@ -141,7 +142,7 @@ const CUSTOMERS: CustomerIntelligenceRow[] = [
   },
   {
     companyName: 'West African Resources',
-    headquarters: 'Ouagadougou, Burkina Faso',
+    headquarters: 'Paris, France',
     keyChemicals: 'Coconut shell GAC, Coal-based backup grades',
     ownership: 'Public',
     contactName: 'Ibrahim Sanogo',
@@ -150,6 +151,146 @@ const CUSTOMERS: CustomerIntelligenceRow[] = [
     phone: '+226 25 33 6600',
     linkedIn: 'linkedin.com/in/ibrahimsanogo',
   },
+  {
+    companyName: 'Freeport-McMoRan (Corporate)',
+    headquarters: 'Phoenix, U.S.',
+    keyChemicals: 'GAC, Coal-based AC, Heap-leach reagent bundles',
+    ownership: 'Public',
+    contactName: 'Laura Chen',
+    designation: 'Director, Chemicals & Consumables',
+    email: 'l.chen@fmi.com',
+    phone: '+1 602 366 8100',
+    linkedIn: 'linkedin.com/in/laurachen',
+  },
+  {
+    companyName: 'Lanka Mineral Sands Ltd.',
+    headquarters: 'Colombo, Sri Lanka',
+    keyChemicals: 'PAC/GAC for mineral separation circuits',
+    ownership: 'Public',
+    contactName: 'Nimal Perera',
+    designation: 'Chief Procurement Officer',
+    email: 'n.perera@lankaminerals.lk',
+    phone: '+94 11 288 6400',
+    linkedIn: 'linkedin.com/in/nimalperera',
+  },
+  {
+    companyName: 'Polyus',
+    headquarters: 'Moscow, Russia',
+    keyChemicals: 'GAC for CIL, Elution chemicals',
+    ownership: 'Public',
+    contactName: 'Alexey Orlov',
+    designation: 'Head of Supply Chain',
+    email: 'a.orlov@polyus.com',
+    phone: '+7 495 248 9800',
+    linkedIn: 'linkedin.com/in/alexeyorlov',
+  },
+  {
+    companyName: 'Aurubis AG',
+    headquarters: 'Hamburg, Germany',
+    keyChemicals: 'Activated carbon for smelter off-gas & water',
+    ownership: 'Public',
+    contactName: 'Stefan Weber',
+    designation: 'Procurement Lead — Smelters',
+    email: 's.weber@aurubis.com',
+    phone: '+49 40 7883 0',
+    linkedIn: 'linkedin.com/in/stefanweber',
+  },
+  {
+    companyName: 'Sudan Gold Refinery Co.',
+    headquarters: 'Khartoum, Sudan',
+    keyChemicals: 'GAC, Carbon fines handling services',
+    ownership: 'Private',
+    contactName: 'Hassan Osman',
+    designation: 'Supply Manager',
+    email: 'h.osman@sudangoldrefinery.sd',
+    phone: '+249 183 778 200',
+    linkedIn: 'linkedin.com/in/hassanosman',
+  },
+  {
+    companyName: 'Sumitomo Metal Mining',
+    headquarters: 'Tokyo, Japan',
+    keyChemicals: 'High-spec GAC, Specialty impregnated grades',
+    ownership: 'Public',
+    contactName: 'Kenji Morita',
+    designation: 'GM, Raw Materials',
+    email: 'k.morita@smm.co.jp',
+    phone: '+81 3 5252 1111',
+    linkedIn: 'linkedin.com/in/kenjimorita',
+  },
+  {
+    companyName: 'Zijin Mining Group',
+    headquarters: 'Xiamen, China',
+    keyChemicals: 'Coal-based GAC, Coconut shell AC imports',
+    ownership: 'Public',
+    contactName: 'Wei Zhang',
+    designation: 'VP Procurement',
+    email: 'w.zhang@zijinmining.com',
+    phone: '+86 592 293 3666',
+    linkedIn: 'linkedin.com/in/weizhang',
+  },
+  {
+    companyName: 'LS MnM Inc.',
+    headquarters: 'Seoul, South Korea',
+    keyChemicals: 'GAC, EAC for hydrometallurgy',
+    ownership: 'Public',
+    contactName: 'Min-jun Park',
+    designation: 'Head of Strategic Sourcing',
+    email: 'mj.park@lsmnm.com',
+    phone: '+82 2 2181 1114',
+    linkedIn: 'linkedin.com/in/minjunpark',
+  },
+  {
+    companyName: 'Malaysian Chamber of Mines',
+    headquarters: 'Kuala Lumpur, Malaysia',
+    keyChemicals: 'GAC, Mining water treatment chemicals',
+    ownership: 'Private',
+    contactName: 'Aisha Rahman',
+    designation: 'Procurement Committee Chair',
+    email: 'a.rahman@mcom.org.my',
+    phone: '+60 3 2161 1828',
+    linkedIn: 'linkedin.com/in/aisharahman',
+  },
+  {
+    companyName: 'Nordic Gold Partners BV',
+    headquarters: 'Amsterdam, Netherlands',
+    keyChemicals: 'European GAC grades, Import coordination',
+    ownership: 'Private',
+    contactName: 'Erik van den Berg',
+    designation: 'Managing Director',
+    email: 'e.vandenberg@nordicgold.nl',
+    phone: '+31 20 794 1200',
+    linkedIn: 'linkedin.com/in/erikvandenberg',
+  },
+  {
+    companyName: 'Centamin plc',
+    headquarters: 'London, U.K.',
+    keyChemicals: 'GAC for CIL/CIP, Reactivated carbon programs',
+    ownership: 'Public',
+    contactName: 'Oliver Hughes',
+    designation: 'Group Procurement',
+    email: 'o.hughes@centamin.com',
+    phone: '+44 20 7404 5950',
+    linkedIn: 'linkedin.com/in/oliverhughes',
+  },
+  {
+    companyName: 'Global Minerals Trading Hub',
+    headquarters: 'Singapore, Rest Of World',
+    keyChemicals: 'Multi-origin GAC sourcing, Spot & contract bundles',
+    ownership: 'Private',
+    contactName: 'Priya Natarajan',
+    designation: 'Regional Trading Lead',
+    email: 'p.natarajan@globalmineralshub.io',
+    phone: '+65 6808 4400',
+    linkedIn: 'linkedin.com/in/priyanatarajan',
+  },
+]
+
+const CUSTOMERS: CustomerIntelligenceRow[] = [
+  ...CURATED_CUSTOMERS,
+  ...(buildSyntheticCustomers(
+    Math.max(0, CUSTOMER_COUNT_TARGET - CURATED_CUSTOMERS.length),
+    CURATED_CUSTOMERS.length
+  ) as CustomerIntelligenceRow[]),
 ]
 
 function ownershipPillClass(o: CustomerOwnership) {
@@ -203,23 +344,25 @@ export default function CustomerIntelligenceDatabase(_props: CustomerIntelligenc
 
   return (
     <div className="w-full">
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Customer Intelligence (10–12 Customers)</h2>
+          <h2 className="text-xl font-bold text-slate-900">Customer Intelligence ({total} customers)</h2>
           <p className="mt-1 text-sm text-gray-500">
             Showing {filtered.length} of {total} customers
           </p>
         </div>
-        <div className="relative w-full sm:w-72">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" aria-hidden />
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search customers..."
-            className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-9 pr-3 text-sm text-black placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/25"
-            aria-label="Search customers"
-          />
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end sm:justify-end">
+          <div className="relative w-full sm:w-72">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" aria-hidden />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search customers..."
+              className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-9 pr-3 text-sm text-black placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+              aria-label="Search customers"
+            />
+          </div>
         </div>
       </div>
 

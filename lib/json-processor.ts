@@ -4,6 +4,7 @@
  */
 
 import type { ComparisonData, DataRecord, Metadata, GeographyDimension, SegmentDimension, SegmentHierarchy } from './types'
+import { DASHBOARD_GEOGRAPHY_OPTIONS } from './dashboard-geographies'
 import fs from 'fs/promises'
 import path from 'path'
 
@@ -1266,6 +1267,18 @@ export async function processJsonDataAsync(
       throw new Error('No geographies found in any data source. Please check your JSON structure.')
     }
 
+    // Include every top-level geography key from value data (e.g. per-country markets) even when
+    // segmentation only lists Global — keeps geography picker and records in sync with value.json.
+    if (valueData && typeof valueData === 'object') {
+      for (const key of Object.keys(valueData)) {
+        const value = valueData[key]
+        if (!value || typeof value !== 'object' || Array.isArray(value)) continue
+        if (!geographies.includes(key)) {
+          geographies.push(key)
+        }
+      }
+    }
+
     // Extract regions AND countries from "By Region" segment type as additional geographies
     // This builds a full geography hierarchy: Global > Regions > Countries
     const regionGeographies: string[] = []
@@ -1366,6 +1379,39 @@ export async function processJsonDataAsync(
       countries: regionToCountries,
       all_geographies: filteredGeographies
     }
+
+    /** Sidebar / picker: canonical 21-market list (stakeholder order), not stray JSON keys. */
+    const hasNestedRegionHierarchy =
+      regionGeographies.length > 0 &&
+      (Object.keys(regionToCountries).length > 0 || allCountries.length > 0)
+
+    const allowedNestedGeographies = new Set<string>([
+      'Global',
+      ...DASHBOARD_GEOGRAPHY_OPTIONS,
+      ...regionGeographies,
+      ...allCountries,
+    ])
+
+    const sidebarGeographyDimension: GeographyDimension = hasNestedRegionHierarchy
+      ? {
+          ...geographyDimension,
+          all_geographies: geographyDimension.all_geographies.filter((g) =>
+            allowedNestedGeographies.has(g)
+          ),
+        }
+      : (() => {
+          const ordered: string[] = []
+          if (geographiesWithData.has('Global')) ordered.push('Global')
+          for (const m of DASHBOARD_GEOGRAPHY_OPTIONS) {
+            if (geographiesWithData.has(m)) ordered.push(m)
+          }
+          return {
+            global: geographiesWithData.has('Global') ? ['Global'] : [],
+            regions: [],
+            countries: {},
+            all_geographies: ordered,
+          }
+        })()
 
     console.log(`Geography dimension built with ${geographies.length} geographies:`, geographies)
     console.log(`Regions:`, regionGeographies)
@@ -1493,7 +1539,7 @@ export async function processJsonDataAsync(
     return {
       metadata,
       dimensions: {
-        geographies: geographyDimension,
+        geographies: sidebarGeographyDimension,
         segments,
       },
       data: {

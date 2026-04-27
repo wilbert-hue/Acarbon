@@ -47,22 +47,6 @@
       "Virgin Activated Carbon": {},
       "Reactivated / Regenerated Activated Carbon": {}
     },
-    "By Region": {
-      "Africa": {
-        "South Africa": {},
-        "Ghana": {},
-        "Mali": {},
-        "Burkina Faso": {},
-        "Tanzania": {},
-        "Côte d'Ivoire": {},
-        "Zimbabwe": {},
-        "Democratic Republic of the Congo": {},
-        "Guinea": {},
-        "Sudan": {},
-        "Mauritania": {}
-      },
-      "Russia": {},
-      "Australia": {}
-    }
+    "By Region": {}
   }
 }

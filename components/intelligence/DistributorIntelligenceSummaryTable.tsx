@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { Search, ArrowUpDown } from 'lucide-react'
+import { buildSyntheticDistributors, DISTRIBUTOR_COUNT_TARGET } from '@/lib/intelligence-synthetic'
 
 export type DistributorOwnership = 'Public' | 'Private' | 'Subsidiary'
 
@@ -17,10 +18,10 @@ export interface DistributorIntelligenceRow {
   linkedIn: string
 }
 
-const DISTRIBUTORS: DistributorIntelligenceRow[] = [
+const CURATED_DISTRIBUTORS: DistributorIntelligenceRow[] = [
   {
     companyName: 'Activated Carbon Technologies (ACT)',
-    headquarters: 'Melbourne, Australia',
+    headquarters: 'Rotterdam, Netherlands',
     productPortfolio: 'Coconut Shell AC, Granular AC, Reactivation Services',
     ownership: 'Private',
     contactName: 'Mark Thompson',
@@ -53,7 +54,7 @@ const DISTRIBUTORS: DistributorIntelligenceRow[] = [
   },
   {
     companyName: 'Camfil APC (Mining)',
-    headquarters: 'Sydney, Australia',
+    headquarters: 'Houston, U.S.',
     productPortfolio: 'GAC supply, Dust & fume systems for process plants',
     ownership: 'Subsidiary',
     contactName: 'Emma Clarke',
@@ -130,7 +131,7 @@ const DISTRIBUTORS: DistributorIntelligenceRow[] = [
   },
   {
     companyName: 'Orica Mining Services',
-    headquarters: 'Melbourne, Australia',
+    headquarters: 'London, U.K.',
     productPortfolio: 'Explosives & reagents bundle, AC for gold recovery',
     ownership: 'Public',
     contactName: 'James Whitmore',
@@ -141,7 +142,7 @@ const DISTRIBUTORS: DistributorIntelligenceRow[] = [
   },
   {
     companyName: 'Veolia Water Technologies (Mining)',
-    headquarters: 'Lyon, France (Africa projects)',
+    headquarters: 'Lyon, France',
     productPortfolio: 'Water treatment, GAC systems, Regeneration services',
     ownership: 'Public',
     contactName: 'Claire Dubois',
@@ -150,6 +151,168 @@ const DISTRIBUTORS: DistributorIntelligenceRow[] = [
     phone: '+33 4 72 67 30 00',
     linkedIn: 'linkedin.com/in/clairedubois',
   },
+  {
+    companyName: 'LankaChem Distributors',
+    headquarters: 'Colombo, Sri Lanka',
+    productPortfolio: 'Imported GAC, Local warehousing, Technical support',
+    ownership: 'Private',
+    contactName: 'Ruwan Silva',
+    designation: 'Commercial Director',
+    email: 'r.silva@lankachem.lk',
+    phone: '+94 11 259 8800',
+    linkedIn: 'linkedin.com/in/ruwansilva',
+  },
+  {
+    companyName: 'Donau Carbon Europe GmbH',
+    headquarters: 'Frankfurt, Germany',
+    productPortfolio: 'Coal & coconut GAC, Impregnated grades, Service contracts',
+    ownership: 'Private',
+    contactName: 'Klaus Brenner',
+    designation: 'Sales Director DACH',
+    email: 'k.brenner@donau-carbon.de',
+    phone: '+49 69 509 5400',
+    linkedIn: 'linkedin.com/in/klausbrenner',
+  },
+  {
+    companyName: 'Eczacıbaşı Mining Chemicals',
+    headquarters: 'Istanbul, Türkiye',
+    productPortfolio: 'GAC, Flotation & leach auxiliaries, Logistics',
+    ownership: 'Public',
+    contactName: 'Elif Yılmaz',
+    designation: 'Key Account Manager',
+    email: 'e.yilmaz@eczacibasi.com.tr',
+    phone: '+90 216 571 9000',
+    linkedIn: 'linkedin.com/in/elifyilmaz',
+  },
+  {
+    companyName: 'Nile Carbon & Chemicals',
+    headquarters: 'Khartoum, Sudan',
+    productPortfolio: 'Bulk GAC supply, Mine-site deliveries',
+    ownership: 'Private',
+    contactName: 'Omar Khalil',
+    designation: 'Managing Partner',
+    email: 'o.khalil@nilecarbon.sd',
+    phone: '+249 183 778 900',
+    linkedIn: 'linkedin.com/in/omarkhalil',
+  },
+  {
+    companyName: 'Osaka Gas Chemicals (Mining)',
+    headquarters: 'Osaka, Japan',
+    productPortfolio: 'High-activity GAC, Specialty carbon products',
+    ownership: 'Public',
+    contactName: 'Yuki Tanaka',
+    designation: 'Industrial Sales Lead',
+    email: 'y.tanaka@osaka-gas.co.jp',
+    phone: '+81 6 6205 5111',
+    linkedIn: 'linkedin.com/in/yukitanaka',
+  },
+  {
+    companyName: 'Hainan Carbon Trading Co.',
+    headquarters: 'Shanghai, China',
+    productPortfolio: 'Coal-based GAC exports, Coconut shell grades',
+    ownership: 'Private',
+    contactName: 'Li Wei',
+    designation: 'Export Manager',
+    email: 'l.wei@hainancarbon.cn',
+    phone: '+86 21 6033 8800',
+    linkedIn: 'linkedin.com/in/liwei',
+  },
+  {
+    companyName: 'Samyang Corporation (Industrial)',
+    headquarters: 'Seoul, South Korea',
+    productPortfolio: 'GAC, EAC, Filtration media for process plants',
+    ownership: 'Public',
+    contactName: 'Jin-ho Lee',
+    designation: 'Team Lead, Mining vertical',
+    email: 'jh.lee@samyang.com',
+    phone: '+82 2 740 7114',
+    linkedIn: 'linkedin.com/in/jinholee',
+  },
+  {
+    companyName: 'ChemLink Egypt',
+    headquarters: 'Cairo, Egypt',
+    productPortfolio: 'GAC imports, Cyanide bundle partners, Local blending',
+    ownership: 'Private',
+    contactName: 'Youssef El-Masry',
+    designation: 'CEO',
+    email: 'y.elmasry@chemlink-eg.com',
+    phone: '+20 2 2290 1188',
+    linkedIn: 'linkedin.com/in/youssefelmasry',
+  },
+  {
+    companyName: 'PetraChem Malaysia',
+    headquarters: 'Kuala Lumpur, Malaysia',
+    productPortfolio: 'Mining chemicals, GAC stocking, Technical service',
+    ownership: 'Subsidiary',
+    contactName: 'Daniel Wong',
+    designation: 'Regional GM',
+    email: 'd.wong@petrachem.my',
+    phone: '+60 3 2282 6600',
+    linkedIn: 'linkedin.com/in/danielwong',
+  },
+  {
+    companyName: 'Chemtrade Logistics Canada',
+    headquarters: 'Toronto, Canada',
+    productPortfolio: 'North American GAC distribution, Bulk transload',
+    ownership: 'Public',
+    contactName: 'Marc Dubé',
+    designation: 'Director, Mining & Metals',
+    email: 'm.dube@chemtrade.ca',
+    phone: '+1 416 926 9150',
+    linkedIn: 'linkedin.com/in/marcdube',
+  },
+  {
+    companyName: 'Gulf Mining Reagents FZ-LLC',
+    headquarters: 'Dubai, UAE',
+    productPortfolio: 'GAC, Flocculants, Regional hub stocking',
+    ownership: 'Private',
+    contactName: 'Rahul Kapoor',
+    designation: 'Commercial Head',
+    email: 'r.kapoor@gulfminingreagents.ae',
+    phone: '+971 4 551 9200',
+    linkedIn: 'linkedin.com/in/rahulkapoor',
+  },
+  {
+    companyName: 'PT Karbon Tambang Nusantara',
+    headquarters: 'Jakarta, Indonesia',
+    productPortfolio: 'Coconut shell GAC, Import & toll milling partners',
+    ownership: 'Private',
+    contactName: 'Budi Santoso',
+    designation: 'Sales Director',
+    email: 'b.santoso@karbontambang.id',
+    phone: '+62 21 2994 1200',
+    linkedIn: 'linkedin.com/in/budisantoso',
+  },
+  {
+    companyName: 'Horizon Supply Partners',
+    headquarters: 'Panama City, Rest Of World',
+    productPortfolio: 'Multi-region GAC sourcing, Consolidated shipments',
+    ownership: 'Private',
+    contactName: 'Carlos Mendez',
+    designation: 'Managing Director',
+    email: 'c.mendez@horizonsupply.io',
+    phone: '+507 836 4400',
+    linkedIn: 'linkedin.com/in/carlosmendez',
+  },
+  {
+    companyName: 'Benelux Carbon Solutions',
+    headquarters: 'Brussels, Belgium',
+    productPortfolio: 'EU-spec GAC, REACH documentation, Warehousing',
+    ownership: 'Private',
+    contactName: 'Sophie Maes',
+    designation: 'Managing Director',
+    email: 's.maes@beneluxcarbon.eu',
+    phone: '+32 2 808 12 90',
+    linkedIn: 'linkedin.com/in/sophiemaes',
+  },
+]
+
+const DISTRIBUTORS: DistributorIntelligenceRow[] = [
+  ...CURATED_DISTRIBUTORS,
+  ...(buildSyntheticDistributors(
+    Math.max(0, DISTRIBUTOR_COUNT_TARGET - CURATED_DISTRIBUTORS.length),
+    CURATED_DISTRIBUTORS.length
+  ) as DistributorIntelligenceRow[]),
 ]
 
 function ownershipPillClass(o: DistributorOwnership) {
@@ -197,23 +360,25 @@ export function DistributorIntelligenceSummaryTable() {
 
   return (
     <div className="w-full">
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Distributor Intelligence (10–12 Distributors)</h2>
+          <h2 className="text-xl font-bold text-slate-900">Distributor Intelligence ({total} distributors)</h2>
           <p className="mt-1 text-sm text-gray-500">
             Showing {filtered.length} of {total} distributors
           </p>
         </div>
-        <div className="relative w-full sm:w-72">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" aria-hidden />
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search distributors..."
-            className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-9 pr-3 text-sm text-black placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/25"
-            aria-label="Search distributors"
-          />
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end sm:justify-end">
+          <div className="relative w-full sm:w-72">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" aria-hidden />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search distributors..."
+              className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-9 pr-3 text-sm text-black placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+              aria-label="Search distributors"
+            />
+          </div>
         </div>
       </div>
 

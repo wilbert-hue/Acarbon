@@ -1,36 +1,24 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useDashboardStore } from '@/lib/store'
 import { TrendingUp } from 'lucide-react'
-import { pickInitialImportingCountry } from '@/lib/import-intelligence-countries'
+import { pickInitialGeographyFilter } from '@/lib/dashboard-geographies'
 import { ImportingCountrySelect } from '@/components/intelligence/ImportingCountrySelect'
+import { getImportAnalysisSupplyingRows } from '@/lib/import-intelligence-mock'
 
 type DisplayMode = 'both' | 'value' | 'volume'
 
 const YEARS = [2022, 2023, 2024, 2025] as const
 
-const SUPPLYING: {
-  country: string
-  usdMn: readonly [number, number, number, number]
-  tons: readonly [number, number, number, number]
-  cagr: number
-  share: number
-}[] = [
-  { country: 'China', usdMn: [21.5, 22.8, 24.1, 24.5], tons: [5800, 6100, 6400, 6550], cagr: 9.4, share: 37.7 },
-  { country: 'India', usdMn: [15.2, 16.1, 17.0, 17.4], tons: [4100, 4350, 4580, 4680], cagr: 12.4, share: 26.7 },
-  { country: 'United States', usdMn: [9.8, 10.2, 10.6, 11.0], tons: [2650, 2750, 2850, 2920], cagr: 8.1, share: 17.0 },
-  { country: 'Netherlands', usdMn: [6.2, 6.5, 6.8, 7.0], tons: [1680, 1750, 1820, 1880], cagr: 7.2, share: 10.8 },
-  { country: 'Japan', usdMn: [4.8, 5.0, 5.2, 5.4], tons: [1290, 1340, 1390, 1420], cagr: 6.5, share: 8.2 },
-]
-
 export function ImportAnalysisView() {
   const [importingCountry, setImportingCountry] = useState(() =>
-    pickInitialImportingCountry(useDashboardStore.getState().filters.geographies)
+    pickInitialGeographyFilter(useDashboardStore.getState().filters.geographies)
   )
   const [displayMode, setDisplayMode] = useState<DisplayMode>('both')
 
-  const maxShare = Math.max(...SUPPLYING.map((s) => s.share))
+  const supplying = useMemo(() => getImportAnalysisSupplyingRows(importingCountry), [importingCountry])
+  const maxShare = Math.max(...supplying.map((s) => s.share), 0.1)
 
   const colSpan = displayMode === 'both' ? 2 : 1
 
@@ -45,7 +33,7 @@ export function ImportAnalysisView() {
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 pb-4">
         <ImportingCountrySelect value={importingCountry} onChange={setImportingCountry} />
         <span className="rounded-full bg-[#E8F5F4] px-3 py-1 text-xs font-medium text-[#1a6b63]">
-          {SUPPLYING.length} supplying countries
+          {supplying.length} supplying countries
         </span>
       </div>
 
@@ -101,7 +89,7 @@ export function ImportAnalysisView() {
             </tr>
           </thead>
           <tbody>
-            {SUPPLYING.map((row) => (
+            {supplying.map((row) => (
               <tr key={row.country} className="hover:bg-gray-50">
                 <td className="border-b border-gray-100 px-3 py-2 font-medium">{row.country}</td>
                 {YEARS.map((_, yi) => (
@@ -125,8 +113,8 @@ export function ImportAnalysisView() {
             <tr className="bg-gray-100 font-semibold">
               <td className="px-3 py-2">Total</td>
               {YEARS.map((_, yi) => {
-                const sumUsd = SUPPLYING.reduce((s, r) => s + r.usdMn[yi], 0)
-                const sumTons = SUPPLYING.reduce((s, r) => s + r.tons[yi], 0)
+                const sumUsd = supplying.reduce((s, r) => s + r.usdMn[yi], 0)
+                const sumTons = supplying.reduce((s, r) => s + r.tons[yi], 0)
                 return (
                   <td key={yi} colSpan={colSpan} className="px-2 py-2">
                     <div className="flex justify-center gap-4 text-xs">
@@ -145,10 +133,10 @@ export function ImportAnalysisView() {
 
       <div>
         <h3 className="mb-3 text-sm font-semibold text-black">
-          Share of Imports by Key / Top {SUPPLYING.length} Supplying Countries ({importingCountry})
+          Share of Imports by Key / Top {supplying.length} Supplying Countries ({importingCountry})
         </h3>
         <div className="space-y-2">
-          {SUPPLYING.map((row) => (
+          {supplying.map((row) => (
             <div key={row.country} className="flex items-center gap-3">
               <span className="w-28 shrink-0 text-xs font-medium text-black">{row.country}</span>
               <div className="h-7 min-w-0 flex-1 rounded bg-gray-100">

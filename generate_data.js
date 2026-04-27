@@ -3,46 +3,33 @@ const path = require('path');
 
 const years = [2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033];
 
-/** Countries under Africa (image 4); Russia & Australia are standalone regions */
-const AFRICA_COUNTRIES = [
-  'South Africa',
+/** Same order as lib/dashboard-geographies.ts */
+const DASHBOARD_GEOGRAPHIES = [
+  'U.S.',
+  'Sri Lanka',
+  'Russia',
   'Ghana',
-  'Mali',
-  'Burkina Faso',
-  'Tanzania',
-  "Côte d'Ivoire",
-  'Zimbabwe',
-  'Democratic Republic of the Congo',
-  'Guinea',
+  'South Africa',
+  'Germany',
+  'Türkiye',
   'Sudan',
-  'Mauritania',
+  'Japan',
+  'China',
+  'Belgium',
+  'South Korea',
+  'Egypt',
+  'Malaysia',
+  'Canada',
+  'UAE',
+  'Netherlands',
+  'U.K.',
+  'France',
+  'Indonesia',
+  'Rest Of World',
 ];
 
-const AFRICA_COUNTRY_SHARES = {
-  'South Africa': 0.22,
-  Ghana: 0.1,
-  Mali: 0.08,
-  'Burkina Faso': 0.07,
-  Tanzania: 0.09,
-  "Côte d'Ivoire": 0.08,
-  Zimbabwe: 0.06,
-  'Democratic Republic of the Congo': 0.12,
-  Guinea: 0.05,
-  Sudan: 0.07,
-  Mauritania: 0.06,
-};
-
-const GEO_BASE_2021 = {
-  Africa: 55,
-  Russia: 42,
-  Australia: 38,
-};
-
-const GEO_GROWTH = {
-  Africa: 0.092,
-  Russia: 0.071,
-  Australia: 0.081,
-};
+const WORLD_MARKET_2021 = 135;
+const AVG_WORLD_GROWTH = 0.081;
 
 /**
  * Nested share trees (sums = 1 per segment type). Keys match UI copy from reference images.
@@ -99,7 +86,6 @@ const SEGMENT_STRUCTURES = {
 
 /** Per-leaf growth multiplier vs geography CAGR (segment-type-relative noise) */
 const LEAF_MULTIPLIERS = {
-  // By Raw Material Source — coal grades
   'Bituminous Coal-Based': 1.02,
   'Lignite/Sub-Bituminous Coal-Based': 1.05,
   'Anthracite Coal-Based': 0.98,
@@ -107,12 +93,10 @@ const LEAF_MULTIPLIERS = {
   'Wood-Based Activated Carbon': 1.04,
   'Peat-Based Activated Carbon': 0.96,
   'Other Biomass-Based Activated Carbon (Bamboo-Based, etc.)': 1.12,
-  // By Product Form
   'Powdered Activated Carbon (PAC)': 0.97,
   'Granular Activated Carbon (GAC)': 1.0,
   'Extruded / Pelletized Activated Carbon (EAC)': 1.06,
   'Others (Bead / Spherical Activated Carbon, etc.)': 1.1,
-  // Application leaves
   'Carbon-in-Leach (CIL)': 1.05,
   'Carbon-in-Pulp (CIP)': 1.03,
   'Carbon-in-Column (CIC)': 1.04,
@@ -129,12 +113,10 @@ const LEAF_MULTIPLIERS = {
   'Chemical & Industrial Processing': 1.01,
   'Oil, Gas & Energy-Linked Purification': 1.0,
   'Others (Consumer, Commercial & Specialty Filtration, etc.)': 1.05,
-  // By Supply Type
   'Virgin Activated Carbon': 1.0,
   'Reactivated / Regenerated Activated Carbon': 1.08,
 };
 
-// “Others” keys share one multiplier where not listed
 const DEFAULT_LEAF_MULT = 1.03;
 
 const volumePerMillionUSD = 920;
@@ -171,7 +153,6 @@ function leafMultiplier(name) {
   return LEAF_MULTIPLIERS[name] ?? DEFAULT_LEAF_MULT;
 }
 
-/** Build nested segment objects with time series from share tree */
 function buildSegmentsForGeo(totalBase, geoGrowth, structure, roundFn) {
   const out = {};
   for (const [key, val] of Object.entries(structure)) {
@@ -187,28 +168,6 @@ function buildSegmentsForGeo(totalBase, geoGrowth, structure, roundFn) {
   return out;
 }
 
-function buildByRegionBlock(roundFn, multiplier) {
-  const africaNested = {};
-
-  for (const c of AFRICA_COUNTRIES) {
-    const share = AFRICA_COUNTRY_SHARES[c];
-    const base = GEO_BASE_2021.Africa * multiplier * share;
-    const gv = GEO_GROWTH.Africa * (1 + (seededRandom() - 0.5) * 0.05);
-    africaNested[c] = generateTimeSeries(base, gv, roundFn);
-  }
-
-  const rBase = GEO_BASE_2021.Russia * multiplier;
-  const rGrowth = GEO_GROWTH.Russia * (1 + (seededRandom() - 0.5) * 0.04);
-  const auBase = GEO_BASE_2021.Australia * multiplier;
-  const auGrowth = GEO_GROWTH.Australia * (1 + (seededRandom() - 0.5) * 0.04);
-
-  return {
-    Africa: africaNested,
-    Russia: generateTimeSeries(rBase, rGrowth, roundFn),
-    Australia: generateTimeSeries(auBase, auGrowth, roundFn),
-  };
-}
-
 function buildGeoPayload(totalMarketBase, geoGrowth, roundFn) {
   const payload = {};
   for (const segType of Object.keys(SEGMENT_STRUCTURES)) {
@@ -222,11 +181,6 @@ function buildGeoPayload(totalMarketBase, geoGrowth, roundFn) {
   return payload;
 }
 
-/**
- * Sum child time-series into each parent node so paths like "Gold Mining" and
- * "Coal-Based Activated Carbon" exist in value.json / volume.json with year keys.
- * filterData keeps leaf rows out when a parent is selected only if the parent aggregate exists.
- */
 function rollupSegmentTree(node, roundFn) {
   if (!node || typeof node !== 'object' || Array.isArray(node)) return;
 
@@ -246,13 +200,13 @@ function rollupSegmentTree(node, roundFn) {
 
   if (childObjects.length === 0) return;
 
-  const years = new Set();
+  const yearSet = new Set();
   for (const ch of childObjects) {
     for (const k of Object.keys(ch)) {
-      if (/^\d{4}$/.test(k)) years.add(k);
+      if (/^\d{4}$/.test(k)) yearSet.add(k);
     }
   }
-  for (const y of years) {
+  for (const y of yearSet) {
     let sum = 0;
     for (const ch of childObjects) {
       const v = ch[y];
@@ -262,7 +216,6 @@ function rollupSegmentTree(node, roundFn) {
   }
 }
 
-/** Roll up each category under a segment type (e.g. Gold Mining, Coal-Based), not the segment-type root. */
 function rollupSegmentTypeBlock(block, roundFn) {
   if (!block || typeof block !== 'object') return;
   const keys = Object.keys(block);
@@ -293,33 +246,23 @@ function generateData(isVolume) {
   const mult = isVolume ? volumePerMillionUSD : 1;
   const data = {};
 
-  const worldTotal = (GEO_BASE_2021.Africa + GEO_BASE_2021.Russia + GEO_BASE_2021.Australia) * mult;
-  const worldGrowth =
-    (GEO_GROWTH.Africa * GEO_BASE_2021.Africa +
-      GEO_GROWTH.Russia * GEO_BASE_2021.Russia +
-      GEO_GROWTH.Australia * GEO_BASE_2021.Australia) /
-    (GEO_BASE_2021.Africa + GEO_BASE_2021.Russia + GEO_BASE_2021.Australia);
+  const worldTotal = WORLD_MARKET_2021 * mult;
+  const worldGrowth = AVG_WORLD_GROWTH;
+  const n = DASHBOARD_GEOGRAPHIES.length;
 
   data.Global = {
     ...buildGeoPayload(worldTotal, worldGrowth, roundFn),
-    'By Region': buildByRegionBlock(roundFn, mult),
+    'By Region': {},
   };
 
-  // Africa — country-level full segments
-  for (const c of AFRICA_COUNTRIES) {
-    const share = AFRICA_COUNTRY_SHARES[c];
-    const countryTotal = GEO_BASE_2021.Africa * mult * share;
-    const gv = GEO_GROWTH.Africa * (1 + (seededRandom() - 0.5) * 0.045);
+  for (let i = 0; i < n; i++) {
+    const c = DASHBOARD_GEOGRAPHIES[i];
+    const share = 1 / n;
+    const noise = 1 + (seededRandom() - 0.5) * 0.12;
+    const countryTotal = worldTotal * share * noise;
+    const gv = worldGrowth * (1 + (seededRandom() - 0.5) * 0.06);
     data[c] = buildGeoPayload(countryTotal, gv, roundFn);
   }
-
-  const rTotal = GEO_BASE_2021.Russia * mult;
-  const rG = GEO_GROWTH.Russia * (1 + (seededRandom() - 0.5) * 0.035);
-  data.Russia = buildGeoPayload(rTotal, rG, roundFn);
-
-  const auTotal = GEO_BASE_2021.Australia * mult;
-  const auG = GEO_GROWTH.Australia * (1 + (seededRandom() - 0.5) * 0.035);
-  data.Australia = buildGeoPayload(auTotal, auG, roundFn);
 
   return data;
 }

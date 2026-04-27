@@ -1,26 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useDashboardStore } from '@/lib/store'
 import { TrendingUp, Minus } from 'lucide-react'
-import { pickInitialImportingCountry } from '@/lib/import-intelligence-countries'
+import { pickInitialGeographyFilter } from '@/lib/dashboard-geographies'
 import { ImportingCountrySelect } from '@/components/intelligence/ImportingCountrySelect'
-
-const ROWS: {
-  country: string
-  price22: number
-  price23: number
-  price24: number
-  price25: number
-  changePct: number
-  tag?: 'lowest' | 'highest'
-}[] = [
-  { country: 'China', price22: 2980, price23: 3050, price24: 3120, price25: 3215, changePct: 7.9, tag: 'lowest' },
-  { country: 'India', price22: 3020, price23: 3100, price24: 3180, price25: 3280, changePct: 8.6 },
-  { country: 'United States', price22: 3180, price23: 3240, price24: 3320, price25: 3420, changePct: 7.5 },
-  { country: 'Netherlands', price22: 3220, price23: 3300, price24: 3380, price25: 3480, changePct: 8.1 },
-  { country: 'Japan', price22: 3350, price23: 3450, price24: 3560, price25: 3675, changePct: 9.7, tag: 'highest' },
-]
+import { getImportPricingRows } from '@/lib/import-intelligence-mock'
 
 function TrendGlyph({ changePct }: { changePct: number }) {
   if (changePct >= 8.5) return <TrendingUp className="mx-auto h-4 w-4 text-green-600" />
@@ -30,12 +15,13 @@ function TrendGlyph({ changePct }: { changePct: number }) {
 
 export function ImportPricingView() {
   const [importingCountry, setImportingCountry] = useState(() =>
-    pickInitialImportingCountry(useDashboardStore.getState().filters.geographies)
+    pickInitialGeographyFilter(useDashboardStore.getState().filters.geographies)
   )
 
-  const avg2025 = ROWS.reduce((s, r) => s + r.price25, 0) / ROWS.length
-  const lowest = ROWS.find((r) => r.tag === 'lowest')!
-  const highest = ROWS.find((r) => r.tag === 'highest')!
+  const rows = useMemo(() => getImportPricingRows(importingCountry), [importingCountry])
+  const avg2025 = rows.reduce((s, r) => s + r.price25, 0) / rows.length
+  const lowest = rows.find((r) => r.tag === 'lowest')!
+  const highest = rows.find((r) => r.tag === 'highest')!
   const spread = highest.price25 - lowest.price25
   const spreadPct = ((spread / lowest.price25) * 100).toFixed(1)
 
@@ -50,7 +36,7 @@ export function ImportPricingView() {
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 pb-4">
         <ImportingCountrySelect value={importingCountry} onChange={setImportingCountry} />
         <span className="rounded-full bg-[#E8F5F4] px-3 py-1 text-xs font-medium text-[#1a6b63]">
-          {ROWS.length} supplying countries
+          {rows.length} supplying countries
         </span>
       </div>
 
@@ -68,7 +54,7 @@ export function ImportPricingView() {
             </tr>
           </thead>
           <tbody>
-            {ROWS.map((row) => (
+            {rows.map((row) => (
               <tr key={row.country} className="hover:bg-gray-50">
                 <td className="border-b border-gray-100 px-3 py-2 font-medium">
                   <span className="inline-flex items-center gap-2">
@@ -98,13 +84,13 @@ export function ImportPricingView() {
             <tr className="bg-gray-100 font-semibold">
               <td className="px-3 py-2">Average</td>
               <td className="px-2 py-2 text-right">
-                ${Math.round(ROWS.reduce((s, r) => s + r.price22, 0) / ROWS.length).toLocaleString()}
+                ${Math.round(rows.reduce((s, r) => s + r.price22, 0) / rows.length).toLocaleString()}
               </td>
               <td className="px-2 py-2 text-right">
-                ${Math.round(ROWS.reduce((s, r) => s + r.price23, 0) / ROWS.length).toLocaleString()}
+                ${Math.round(rows.reduce((s, r) => s + r.price23, 0) / rows.length).toLocaleString()}
               </td>
               <td className="px-2 py-2 text-right">
-                ${Math.round(ROWS.reduce((s, r) => s + r.price24, 0) / ROWS.length).toLocaleString()}
+                ${Math.round(rows.reduce((s, r) => s + r.price24, 0) / rows.length).toLocaleString()}
               </td>
               <td className="px-2 py-2 text-right">${Math.round(avg2025).toLocaleString()}</td>
               <td className="px-2 py-2 text-center">—</td>
